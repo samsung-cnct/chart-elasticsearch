@@ -1,0 +1,14 @@
+name: sample-chart
+version: ${CHART_VER}-${CHART_REL}
+description: Sample chart template for registry
+keywords:
+- keyword one
+- keyword two
+home: https://github.com/samsung-cnct/template-chart
+sources:
+- /source urls go here/
+maintainers:
+- name: Samsung CNCT
+  email: samsung.cloudnative@gmail.com
+icon: /optional icon url/
+engine: gotpl
