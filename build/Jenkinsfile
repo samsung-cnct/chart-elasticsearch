@@ -20,7 +20,7 @@ podTemplate(label: 'chart-builder', containers: [
             }
 
             stage('Test') {
-                kubesh("helm lint ${chart_namem}")
+                kubesh("helm lint ${chart_name}")
             }
 
             if (env.BRANCH_NAME.startsWith('tags/v')) {
