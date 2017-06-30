@@ -50,4 +50,22 @@ Manual Instructions
     * _Enter into Include Branches_ `**`
 * Build Configuration
   * _Enter into Script Path_ `build/Jenkinsfile`
+  * Scan Repository Triggers
+    * Periodically if not otherwise run
 * Save
+
+Add Webhooks to Github
+----------------------
+
+Add the following webhooks:
+* https://common-jenkins.kubeme.io/github-webhook/
+  Send me everything
+* https://common-jenkins.kubeme.io/ghprbhook/
+  Let me select indivdual events: Issue comment, Pull Request
+
+Optionally add a webhook for slack, eg:
+* https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX
+  Content Type: application/json
+  Individual Events: Commit comment, Delete, Deployment status, Issues, 
+                     Pull request review, Push, Create, Fork, Issue Comment,
+                     Pull request, Pull request review comment, Release
