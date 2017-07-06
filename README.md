@@ -20,4 +20,4 @@ Edit README.md
 Edit README.md, changing the chart name in the first line and deleting
 everything below.
 
-Continue to the [build README](build/README.md).
+Continue to the [documentation](docs/README.md).
