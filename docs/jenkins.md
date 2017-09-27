@@ -82,24 +82,6 @@ So select `Save` and let's configure [github](github.md)
 Chart builds for production require your use of _git tags_! Here are some things you need to know about tagging:
 
 * from [Git document for tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging)..."Like most VCSs, Git has the ability to tag specific points in history as being important. Typically people use this functionality to mark release points (v1.0, and so on)."
-* `git` tagging by default only tags a commit on your local repo. You must explicitly push your tags to your remote repos for your tags to persist remotely.
-  * Set a local tag (_note_ that you tag a _commit_ as demonstrated here):
-  ```
-    # stuff is already added/staged
-    $ git commit -m 'some message'
-    $ git tag <tagname>
-  ```
-  * And then to push to remote:
-  ```
-    $ git push --tags
-  ```
-* If you tag a commit prematurely, you can delete it:
-  * Local tags:
-  ```
-    $ git tag -d <tagname>
-  ```
-  * Remote tags:
-  ```
-    $ git push --delete origin <tagname>
-  ```
+* `git` tagging by default only tags a commit on your local repo. You must tag the master repo using either `git` or the _github.com_ UI.
+* Tagging does not persist through PRs.
 
