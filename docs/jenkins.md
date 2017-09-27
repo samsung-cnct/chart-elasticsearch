@@ -39,6 +39,10 @@ Edit this file to match your chart as needed. Do not alter the line starting wit
    * Check _Build origin PRs (unmerged head)_
    * Check _Build fork PRs (unmerged head)_
    * Uncheck _everything else_
+* Add "Advanced clone behaviours"
+   * _click Add_
+   * Select "_Advanced Clone Behaviors_"
+ 	
 
 ![screenshot](images/jenkins/github-settings.png)
 
@@ -72,4 +76,12 @@ Per the Jenkinsfile, this credential should be set to `quay_credentials`
 ### You're almost done
 
 So select `Save` and let's configure [github](github.md)
+
+### NOTE NOTE NOTE
+
+Chart builds for production require your use of _git tags_! Here are some things you need to know about tagging:
+
+* from [Git document for tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging)..."Like most VCSs, Git has the ability to tag specific points in history as being important. Typically people use this functionality to mark release points (v1.0, and so on)."
+* `git` tagging by default only tags a commit on your local repo. You must tag the master repo using either `git` or the _github.com_ UI.
+* Tagging does not persist through PRs.
 
