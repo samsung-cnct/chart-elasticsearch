@@ -1,14 +1,13 @@
-name: sample-chart
+name: zabra-chart
 version: ${CHART_VER}-${CHART_REL}
 description: Sample chart template for registry
 keywords:
-- keyword one
-- keyword two
-home: https://github.com/samsung-cnct/template-chart
+- kraken
+home: https://github.com/samsung-cnct/zabra-chart
 sources:
-- /source urls go here/
+- https://github.com/samsung-cnct/zabra-chart
 maintainers:
 - name: Samsung CNCT
   email: samsung.cloudnative@gmail.com
-icon: /optional icon url/
+icon: https://github.com/samsung-cnct/solas/docs/images/samsung-logo.svg
 engine: gotpl
