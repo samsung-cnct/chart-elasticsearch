@@ -1,4 +1,4 @@
-name: zabra-chart
+name: zabra
 version: ${CHART_VER}-${CHART_REL}
 description: Sample chart template for registry
 keywords:

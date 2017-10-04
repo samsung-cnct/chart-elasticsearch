@@ -5,17 +5,12 @@ def registry = "quay.io";
 def registry_user = "samsung_cnct";
 def chart_name = "zabra";
 def robot_secret = "quay-robot-zabra-rw"
-
 def helm_registry_image = "quay.io/samsung_cnct/helm-registry-agent";
 def helm_registry_version = "v0.1.5";
 
 podTemplate(label: 'chart-builder', containers: [
         containerTemplate(name: 'jnlp', image: 'quay.io/samsung_cnct/custom-jnlp:0.1', args: '${computer.jnlpmac} ${computer.name}'),
-        containerTemplate(name: 'helm-registry-agent', image: 'quay.io/samsung_cnct/helm-registry-agent:v0.1.5', ttyEnabled: true, command: 'cat', alwaysPullImage: true, resourceRequestMemory: '256Mi', resourceLimitMemory: '256Mi'),
-], volumes: [
-    secretEnvVar(key: 'USERNAME', secretName: robot_secret, secretKey: 'username'),
-    secretEnvVar(key: 'PASSWORD', secretName: robot_secret, secretKey: 'password')
-]) {
+        containerTemplate(name: 'helm-registry-agent', image: 'quay.io/samsung_cnct/helm-registry-agent:v0.1.5', ttyEnabled: true, command: 'cat', alwaysPullImage: true, resourceRequestMemory: '256Mi', resourceLimitMemory: '256Mi')]) {
     node('chart-builder') {
         customContainer('helm-registry-agent'){
             stage('Checkout') {
@@ -23,7 +18,9 @@ podTemplate(label: 'chart-builder', containers: [
             }
 
             stage('Build') {
-                kubesh("CHART_VER=\$(git describe --tags --abbrev=0 | sed 's/^v//') CHART_REL=\$(git rev-list --count v\${CHART_VER}..HEAD) envsubst < build/Chart.yaml.in > ${chart_name}/Chart.yaml")
+                kubesh("CHART_VER=1 CHART_REL=1 envsubst < Chart.yaml.in > ${chart_name}/Chart.yaml")
+
+                //kubesh("CHART_VER=\$(git describe --tags --abbrev=0 | sed 's/^v//') CHART_REL=\$(git rev-list --count v\${CHART_VER}..HEAD) envsubst < build/Chart.yaml.in > ${chart_name}/Chart.yaml")
             }
 
             stage('Test') {
@@ -32,7 +29,9 @@ podTemplate(label: 'chart-builder', containers: [
 
             if (env.BRANCH_NAME.startsWith('tags/v')) {
                 stage('Deploy') {
-                    kubesh("helm registry login ${registry} -u ${USERNAME} -p ${PASSWORD} && cd ${chart_name} && helm registry push ${registry}/${registry_user}/${chart_name} -c stable")
+                    withCredentials([usernamePassword(credentialsId: robot_secret, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        kubesh("helm registry login ${registry} -u ${USERNAME} -p ${PASSWORD} && cd ${chart_name} && helm registry push ${registry}/${registry_user}/${chart_name} -c stable")
+                    }
                 }
             }
         }       
