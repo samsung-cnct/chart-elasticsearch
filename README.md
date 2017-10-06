@@ -1,44 +1,39 @@
-# solas-chart
-`solas-chart` is scaffolding for new chart repositories hosted by Samsung CNCT. It
-implements our best practices, such as issue and PR templates, commit hooks,
-licensing guidelines, and so on.
+# Chart for Elasticsearch
 
-We use Jenkins to implement our CI/CD pipelines. There is one Jenkins job for
-each GitHub repository. Each job builds, tests and, then deploys an artifact
-to Quay.
+A helm chart for elasticsearch deployment on Kubernetes. ElasticSearch is an open source, RESTful search engine built on top of Apache Lucene and released under an Apache license. It is Java-based and can search and index document files in diverse formats.
 
-SOLAS is also an international maritime treaty to ensure ships comply with
-minimum safety standards in construction, equipment and operation.
+## Purpose
+Static configs for a production grade elasticsearch deploy on kubernetes. Meant for use with [this](https://quay.io/repository/samsung_cnct/elasticsearch-container) image on quay.
 
-# Quickstart
+## Architecture details
+master nodes:
+ - 3 node statefulset
+ - if scaled, need to update quorum information
 
-- The name of chart repos should be of the form `chart-${NAME}`. For example,
-`chart-zabra` is the name of the repo which builds a chart named `zabra`.
+ data nodes:
+ - 3 node statefulset
+ - scale at will
 
-- [Create](https://help.github.com/articles/creating-a-new-repository/) a
-new empty repo under the [`samsung-cnct`](https://github.com/samsung-cnct)
-org using the GitHub GUI, for example https://github.com/samsung-cnct/chart-zabra .
+## Kubernetes Resources
+master node (each):
+ - 4GB
+ - 1/2 CPU (500m)
 
-- [Duplicate](https://help.github.com/articles/duplicating-a-repository/)
-this repo (https://github.com/samsung-cnct/solas-chart) and push it to the `chart-zabra`
-repo you created in the previous step. Note the arguments to clone and push.
+data nodes (each):
+ - 4GB  (first knob to turn up for performance reasons.  Do not exceed 31GB, the jvm breaks down)
+ - 1/2 CPU (500m)
+ - 20GB of disk (this should be increased greatly for production use)
 
+## How to implement on running Kubernetes cluster
 ```
-git clone --bare https://github.com/samsung-cnct/solas-chart.git
-cd solas-chart.git
-git push --mirror https://github.com/samsung-cnct/chart-zabra.git
-cd ..
-rm -rf solas-chart.git
+kubectl create -f es-data-statefulset.yaml
+kubectl create -f es-master-statefulset.yaml
+kubectl create -f services.yaml
 ```
+For cluster with kubernetes version >= 1.6, `kubectl create -f es-rbac.yaml`
 
-- Configure CI/CD by following the instructions for
-[GitHub](https://github.com/samsung-cnct/solas/blob/master/docs/github.md),
-[Quay](https://github.com/samsung-cnct/solas/blob/master/docs/quay.md),
-and [Jenkins](https://github.com/samsung-cnct/solas/blob/master/docs/jenkins.md).
+## Curator
+This deployment is meant for use with Elasticsearch curator to manage indices.
+See the [chart](https://github.com/samsung-cnct/chart-curator) and [container](https://github.com/samsung-cnct/container-curator) for more information. 
 
-- Configure [Slack](https://github.com/samsung-cnct/solas/blob/master/docs/slack.md)
-notifications.
-
-- [Fork](https://help.github.com/articles/fork-a-repo/) the `chart-zabra` repo
-(https://github.com/samsung-cnct/chart-zabra) from `samsung-cnct` and begin
-submitting PRs.
+###  [Guide to Elasticsearch Index Performance](https://www.elastic.co/guide/en/elasticsearch/guide/current/indexing-performance.html)

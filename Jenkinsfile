@@ -1,12 +1,12 @@
 /*
    This Jenkinsfile builds and tests helm charts, and pushes tagged versions to an app registry.
  */
-def github_org         = "samsung-cnct";
+def github_org            = "samsung-cnct";
 def publish_branch        = "master";
 def registry              = "quay.io";
 def registry_user         = "samsung_cnct";
-def chart_name            = "zabra";
-def robot_secret          = "quay-robot-zabra-rw"
+def chart_name            = "elasticsearch";
+def robot_secret          = "quay-robot-elasticsearch-rw"
 def helm_registry_image   = "quay.io/samsung_cnct/helm-registry-agent";
 def helm_registry_version = "v0.1.5";
 

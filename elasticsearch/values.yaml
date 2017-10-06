@@ -1,0 +1,77 @@
+# Default values for elasticsearch.
+# This is a YAML-formatted file.
+# Declare name/value pairs to be passed into your templates.
+# name: value
+
+#Services
+image: quay.io/samsung_cnct/chart-elasticsearch
+name: elasticsearch
+namespace: kube-logging
+port: 9200
+port_name: http
+port_selector: elasticsearch-data
+cluster_name: elasticsearch-cluster
+cluster_port: 9300
+cluster_port_name: cluster-comms
+
+#Master StatefulSet
+master_name: elasticsearch-master
+# master_replicas: if changing this value, please also update the
+# elasticsearch configuration file quorum settings in the
+# samsung_cnct/elasticsearch image. This value should not be altered
+# when running in production
+master_replicas: 3
+master_imagePullPolicy: Always
+master_cpu_limits: 500m
+master_cpu_requests: 500m
+master_memory_limits: 4Gi
+master_memory_requests: 4Gi
+# master_volume_storage: set to small so when exploring with this the
+# user doesn't accidentally create very large disks
+master_volume_storage: 20Gi
+# Xms & Xmx: must be the same
+# should be ~75% of total memory allocation
+master_Xms_Xmx: 3g
+master_tolerations:
+ # - key: taintKey
+ #   value: taintValue
+ #   operator: Equal
+ #   effect: NoSchedule
+master_scheduling:
+  affinity:
+    node:
+      type: #requiredDuringSchedulingIgnoredDuringExecution
+      labels:
+      # - key: iamalabelkey
+      #   operator: In
+      #   values: ["value1", "value2"]
+
+#Cluster StatefulSet
+data_name: elasticsearch-data
+# data_replicas: This can be changed at will for scaling purposes
+# either in this chart or at the command line during production
+data_replicas: 3
+# resource notes:  datanodes are pretty heavy.
+# These should be modified up for a real production setting
+# recommendation is two cores and 20GB of memory for the containers
+data_cpu_limits: 500m
+data_memory_limits: 4Gi
+data_cpu_requests: 500m
+data_memory_requests: 4Gi
+data_volume_storage: 20Gi
+# Xms & Xmx: must be the same
+# should be ~75% of total memory allocation
+data_Xms_Xmx: 3g
+data_tolerations:
+ # - key: taintKey
+ #   value: taintValue
+ #   operator: Equal
+ #   effect: NoSchedule
+data_scheduling:
+  affinity:
+    node:
+      type: #requiredDuringSchedulingIgnoredDuringExecution
+      labels:
+      # - key: iamalabelkey
+      #   operator: In
+      #   values: ["value1", "value2"]
