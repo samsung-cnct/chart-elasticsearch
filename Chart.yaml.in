@@ -1,4 +1,4 @@
-name: elasticsearch
+name: chart-elasticsearch
 version: ${CHART_VER}-${CHART_REL}
 description: ElasticSearch Cluster Chart for Kubernetes
 keywords:
