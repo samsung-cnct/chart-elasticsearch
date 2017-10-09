@@ -24,6 +24,13 @@ data nodes (each):
  - 1/2 CPU (500m)
  - 20GB of disk (this should be increased greatly for production use)
 
+## How to install on running Kubernetes cluster with `helm`
+Install Helm and the Helm registry plugin with [these](https://github.com/app-registry/appr-helm-plugin/blob/master/README.md#install-the-helm-registry-plugin) instructions.
+
+```
+helm registry install quay.io/samsung_cnct/chart-elasticsearch
+```
+
 ## How to implement on running Kubernetes cluster with `kubectl`
 ```
 kubectl create -f es-data-statefulset.yaml
@@ -31,13 +38,6 @@ kubectl create -f es-master-statefulset.yaml
 kubectl create -f services.yaml
 ```
 For cluster with kubernetes version >= 1.6, `kubectl create -f es-rbac.yaml`
-
-## How to install on running Kubernetes cluster with `helm`
-Install Helm and the Helm registry plugin with [these](https://github.com/app-registry/appr-helm-plugin/blob/master/README.md#install-the-helm-registry-plugin) instructions.
-
-```
-helm registry install quay.io/samsung_cnct/chart-elasticsearch
-```
 
 ## Curator
 This deployment is meant for use with Elasticsearch curator to manage indices.
