@@ -1,6 +1,6 @@
 # Chart for Elasticsearch
 
-A helm chart for elasticsearch deployment on Kubernetes. ElasticSearch is an open source, RESTful search engine built on top of Apache Lucene and released under an Apache license. It is Java-based and can search and index document files in diverse formats.
+A Helm chart for Elasticsearch deployment on Kubernetes. Elasticsearch is an open source, RESTful search engine built on top of Apache Lucene and released under an Apache license. It is Java-based and can search and index document files in diverse formats.
 
 ## Purpose
 Static configs for a production grade elasticsearch deploy on kubernetes. Meant for use with [this](https://quay.io/repository/samsung_cnct/elasticsearch-container) image on quay.
@@ -34,6 +34,6 @@ For cluster with kubernetes version >= 1.6, `kubectl create -f es-rbac.yaml`
 
 ## Curator
 This deployment is meant for use with Elasticsearch curator to manage indices.
-See the [chart](https://github.com/samsung-cnct/chart-curator) and [container](https://github.com/samsung-cnct/container-curator) for more information. 
+See the [chart](https://github.com/samsung-cnct/chart-curator) and [container](https://github.com/samsung-cnct/container-curator) for more information.
 
 ###  [Guide to Elasticsearch Index Performance](https://www.elastic.co/guide/en/elasticsearch/guide/current/indexing-performance.html)
