@@ -1,11 +1,13 @@
-name: zabra
+name: elasticsearch-chart
 version: ${CHART_VER}-${CHART_REL}
-description: Sample chart template for registry
+description: ElasticSearch Cluster Chart for Kubernetes
 keywords:
-- kraken
-home: https://github.com/samsung-cnct/chart-zabra
+- elasticsearch
+- logging
+- data
+home: https://github.com/samsung-cnct/chart-elasticsearch
 sources:
-- https://github.com/samsung-cnct/chart-zabra
+- https://github.com/samsung-cnct/chart-elasticsearch
 maintainers:
 - name: Samsung CNCT
   email: samsung.cloudnative@gmail.com

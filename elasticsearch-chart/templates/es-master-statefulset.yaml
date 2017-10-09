@@ -1,0 +1,108 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: {{.Values.master_name}}
+  namespace: {{.Values.namespace}}
+spec:
+  serviceName: "{{.Values.master_name}}"
+  replicas: {{.Values.master_replicas}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.name}}
+        name: {{.Values.master_name}}
+      annotations:
+        pod.alpha.kubernetes.io/init-containers: '[
+            {
+                "name": "max-map-count-set",
+                "image": "quay.io/samsung_cnct/set_max_map_count:1.1",
+                "volumeMounts": [
+                    {
+                        "name": "hostproc",
+                        "mountPath": "/hostproc"
+                    }
+                ]
+            }]'
+    spec:
+      serviceAccount: {{.Values.name}}
+      serviceAccountName: {{.Values.name}}
+      containers:
+      - name: {{.Values.name}}
+        image: {{.Values.image}}
+        ports:
+        - name: {{.Values.cluster_port_name}}
+          containerPort: {{.Values.cluster_port}}
+        #  resource notes:  master is light weight so half a CPU.  Less then 4GB causes the container to OOM
+        resources:
+          limits:
+            cpu: {{.Values.master_cpu_limits}}
+            memory: {{.Values.master_memory_limits}}
+          requests:
+            cpu: {{.Values.master_cpu_requests}}
+            memory: {{.Values.master_memory_requests}}
+        env:
+        - name: CLUSTER_NAME
+          value: "{{.Values.cluster_name}}"
+        - name: NODE_DATA
+          value: "false"
+        - name: NODE_MASTER
+          value: "true"
+        - name: SERVICE
+          value: "{{.Values.cluster_name}}"
+        #  the min/max *must* be the same due to elasticsearch 5.0 bootstrap checks
+        - name: ES_JAVA_OPTS
+          value: "-Xms{{ .Values.master_Xms_Xmx }} -Xmx{{ .Values.master_Xms_Xmx }} -Djava.net.preferIPv4Stack=true"
+        - name: KUBERNETES_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        imagePullPolicy: {{.Values.master_imagePullPolicy}}
+        volumeMounts:
+        - name: esdata
+          mountPath: /usr/share/elasticsearch/data
+      volumes:
+      - name: hostproc
+        hostPath:
+          path: /proc
+      {{- if .Values.master_tolerations }}
+      tolerations:
+      {{- range .Values.master_tolerations }}
+      - key: {{ .key | default ("") }}
+        value: {{ .value | default ("")}}
+        operator: {{ .operator | default ("Equal") }}
+        effect: {{ .effect  | default ("")}}
+      {{- end }}
+      {{- end }}
+      {{- if .Values.master_scheduling.affinity }}
+      {{- if .Values.master_scheduling.affinity.node }}
+      {{- if .Values.master_scheduling.affinity.node.labels }}
+      affinity:
+        nodeAffinity:
+          {{ .Values.master_scheduling.affinity.node.type }}:
+            nodeSelectorTerms:
+            - matchExpressions:
+                {{- range .Values.master_scheduling.affinity.node.labels }}
+                - key: {{ .key }}
+                  operator: {{ .operator }}
+                  values:
+                  {{- range .values }}
+                  - {{ . }}
+                  {{- end }}
+                {{- end }}
+      {{- end }}
+      {{- end }}
+      {{- end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: esdata
+      annotations:
+        volume.alpha.kubernetes.io/storage-class: anything
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{.Values.master_volume_storage}}
