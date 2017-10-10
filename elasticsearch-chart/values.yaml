@@ -4,7 +4,7 @@
 # name: value
 
 #Services
-image: quay.io/samsung_cnct/chart-elasticsearch
+image: quay.io/samsung_cnct/elasticsearch-chart
 name: elasticsearch
 namespace: kube-logging
 port: 9200
