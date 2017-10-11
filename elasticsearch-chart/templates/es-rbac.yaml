@@ -2,9 +2,9 @@
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  name: elasticsearch
+  name: {{.Values.name}}
   labels:
-    app: elasticsearch
+    app: {{.Values.name}}
     kubernetes.io/cluster-service: "true"
     addonmanager.kubernetes.io/mode: Reconcile
 rules:
@@ -16,18 +16,16 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  name: elasticsearch
-  namespace: kube-logging
+  name: {{.Values.name}}
   labels:
-    app: elasticsearch
+    app: {{.Values.name}}
     kubernetes.io/cluster-service: "true"
     addonmanager.kubernetes.io/mode: Reconcile
 subjects:
 - kind: ServiceAccount
-  name: elasticsearch
-  namespace: kube-logging
+  name: {{.Values.name}}
   apiGroup: ""
 roleRef:
   kind: ClusterRole
-  name: elasticsearch
+  name: {{.Values.name}}
   apiGroup: ""
