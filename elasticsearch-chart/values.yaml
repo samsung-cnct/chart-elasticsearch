@@ -5,6 +5,7 @@
 
 image: quay.io/samsung_cnct/elasticsearch-container
 name: elasticsearch
+namespace: default
 
 #Services
 port: 9200
