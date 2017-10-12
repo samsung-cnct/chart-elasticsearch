@@ -6,13 +6,18 @@ metadata:
   namespace: {{.Values.namespace}}
   labels:
     app: {{.Values.name}}
+    kubernetes.io/cluster-service: "true"
+    addonmanager.kubernetes.io/mode: Reconcile
+    kubernetes.io/name: "Elasticsearch"
 spec:
   ports:
   - port: {{.Values.port}}
     name: {{.Values.port_name}}
-  clusterIP: None
+  # clusterIP: None
   selector:
     name: {{.Values.port_selector}}
+  type: LoadBalancer #this will be removed after kibana is set up
+
 ---
 apiVersion: v1
 kind: Service
@@ -21,6 +26,9 @@ metadata:
   namespace: {{.Values.namespace}}
   labels:
     app: {{.Values.cluster_name}}
+    kubernetes.io/cluster-service: "true"
+    addonmanager.kubernetes.io/mode: Reconcile
+    kubernetes.io/name: "Elasticsearch"
 spec:
   ports:
   - port: {{.Values.cluster_port}}
