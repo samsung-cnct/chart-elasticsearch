@@ -16,7 +16,6 @@ spec:
   # clusterIP: None
   selector:
     name: {{.Values.port_selector}}
-  type: LoadBalancer #this will be removed after kibana is set up
 
 ---
 apiVersion: v1
