@@ -15,12 +15,6 @@ spec:
       serviceAccount: {{.Values.name}}
       serviceAccountName: {{.Values.name}}
       initContainers:
-      - name: max-map-count-set
-        image: quay.io/samsung_cnct/set_max_map_count:1.1
-        volumeMounts: [
-          { "name": "hostproc", 
-            "mountPath": "/hostproc"
-          }]
       - name: sysctl
         image: busybox
         imagePullPolicy: IfNotPresent
