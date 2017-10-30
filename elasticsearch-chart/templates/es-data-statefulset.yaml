@@ -15,12 +15,6 @@ spec:
       serviceAccount: {{.Values.name}}
       serviceAccountName: {{.Values.name}}
       initContainers:
-      - name: max-map-count-set
-        image: quay.io/samsung_cnct/set_max_map_count:1.1
-        volumeMounts: [
-          { "name": "hostproc", 
-            "mountPath": "/hostproc"
-          }]
       - name: sysctl
         image: busybox
         imagePullPolicy: IfNotPresent
@@ -66,10 +60,6 @@ spec:
         volumeMounts:
         - name: esdata
           mountPath: /usr/share/elasticsearch/data
-      volumes:
-      - name: hostproc
-        hostPath:
-          path: /proc
       {{- if .Values.data_tolerations }}
       tolerations:
       {{- range .Values.data_tolerations }}
