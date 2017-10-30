@@ -60,10 +60,6 @@ spec:
         volumeMounts:
         - name: esdata
           mountPath: /usr/share/elasticsearch/data
-      volumes:
-      - name: hostproc
-        hostPath:
-          path: /proc
       {{- if .Values.data_tolerations }}
       tolerations:
       {{- range .Values.data_tolerations }}
