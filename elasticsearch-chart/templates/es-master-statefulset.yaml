@@ -34,6 +34,12 @@ spec:
           requests:
             cpu: {{.Values.master_cpu_requests}}
             memory: {{.Values.master_memory_requests}}
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - IPC_LOCK
+              - SYS_RESOURCE
         env:
         - name: CLUSTER_NAME
           value: "{{.Values.cluster_name}}"
