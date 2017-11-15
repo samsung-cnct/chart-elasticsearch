@@ -49,6 +49,8 @@ spec:
           value: "true"
         - name: SERVICE
           value: "{{.Values.cluster_name}}"
+        - name: HTTP_ENABLE
+          value: "false"
         #  the min/max *must* be the same due to elasticsearch 5.0 bootstrap checks
         - name: ES_JAVA_OPTS
           value: "-Xms{{ .Values.master_Xms_Xmx }} -Xmx{{ .Values.master_Xms_Xmx }} -Djava.net.preferIPv4Stack=true"
