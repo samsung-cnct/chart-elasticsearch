@@ -14,6 +14,7 @@ port_selector: elasticsearch-data
 cluster_name: elasticsearch-cluster
 cluster_port: 9300
 cluster_port_name: cluster-comms
+service_name: elasticsearch-discovery
 
 #Master StatefulSet
 master_name: elasticsearch-master

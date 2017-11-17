@@ -50,6 +50,8 @@ spec:
           value: "false"
         - name: SERVICE
           value: "{{ .Values.cluster_name }}"
+        - name: HTTP_ENABLE
+          value: "true"
         #  the min/max *must* be the same due to elasticsearch 5.0 bootstrap checks.  For a production settings
         #  this should be 16GB.  Don't go over 32GB as the JVM starts to have issues.
         - name: ES_JAVA_OPTS

@@ -21,10 +21,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{.Values.cluster_name}}
+  name: {{.Values.service_name}}
   namespace: {{.Values.namespace}}
   labels:
     app: {{.Values.cluster_name}}
+    name: {{ .Values.master_name}}
     kubernetes.io/cluster-service: "true"
     addonmanager.kubernetes.io/mode: Reconcile
     kubernetes.io/name: "Elasticsearch"
@@ -32,6 +33,7 @@ spec:
   ports:
   - port: {{.Values.cluster_port}}
     name: {{.Values.cluster_port_name}}
+    protocol: TCP
   clusterIP: None
   selector:
     app: {{.Values.name}}
