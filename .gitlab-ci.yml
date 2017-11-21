@@ -2,7 +2,7 @@ image: $HELM_REGISTRY_IMAGE:$HELM_REGISTRY_VERSION
 
 variables:
   REGISTRY: quay.io
-  REGISTRY_USER: your_org # we set this to override to samsung_cnct in gitlab Group Variables
+  REGISTRY_USER: samsung_cnct
   CHART_NAME: elasticsearch-chart
   ROBOT_ACCOUNT: elasticsearch_rw
   HELM_REGISTRY_IMAGE: quay.io/samsung_cnct/helm-registry-agent
