@@ -12,10 +12,11 @@ metadata:
 spec:
   ports:
   - port: {{.Values.port}}
+    nodePort: {{.Values.node_port}}
     name: {{.Values.port_name}}
-  # clusterIP: None
   selector:
     name: {{.Values.port_selector}}
+  type: nodePort
 
 ---
 apiVersion: v1

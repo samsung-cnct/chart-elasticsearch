@@ -9,6 +9,7 @@ namespace: default
 
 #Services
 port: 9200
+node_port: 30920
 port_name: http
 port_selector: elasticsearch-data
 cluster_name: elasticsearch-cluster
