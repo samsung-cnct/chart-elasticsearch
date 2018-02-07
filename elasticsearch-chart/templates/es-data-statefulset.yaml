@@ -2,7 +2,6 @@ apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: {{.Values.data_name}}
-  namespace: {{.Values.namespace}}
 spec:
   serviceName: "{{.Values.data_name}}"
   replicas: {{.Values.data_replicas}}
