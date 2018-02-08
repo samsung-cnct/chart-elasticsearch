@@ -21,9 +21,8 @@ fi
 helm install --replace --name ${RELEASE} --namespace ${NAMESPACE} ./${CHART_NAME}
 
 # wait for full es cluster to come up
-WAIT_TIME_SEC=120
-echo Waiting for install ${WAIT_TIME_SEC}s
-sleep ${WAIT_TIME_SEC}
+echo Waiting for install 
+sleep 120
 
 # if there are tests, run them against the installed chart
 if [[ -d ${CHART_NAME}/templates/tests ]]; then
@@ -34,5 +33,14 @@ fi
 
 # cleanup
 echo Cleaning up
-helm delete --purge ${RELEASE} &
+helm delete --purge ${RELEASE} &> /dev/null &
+
+echo Waiting for un-install
+sleep 300
+
+# Note: This assumes the default storage class has been
+# created with a reclaimPolicy of Delete. Otherwise the
+# PVs will need to be manually deleted.
+echo Deleting associated PVCs
+kubectl delete pvc -l app=elasticsearch -n  ${NAMESPACE}
 exit ${HELM_TEST_EXIT_CODE}
