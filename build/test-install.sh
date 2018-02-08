@@ -18,14 +18,21 @@ if [[ ! -d ${CHART_NAME} ]]; then
 fi
 
 # install
-helm install --wait --replace --name ${RELEASE} --namespace ${NAMESPACE} ./${CHART_NAME}
+helm install --replace --name ${RELEASE} --namespace ${NAMESPACE} ./${CHART_NAME}
+
+# wait for full es cluster to come up
+WAIT_TIME_SEC=120
+echo Waiting for install ${WAIT_TIME_SEC}s
+sleep ${WAIT_TIME_SEC}
 
 # if there are tests, run them against the installed chart
 if [[ -d ${CHART_NAME}/templates/tests ]]; then
+  echo Testing release ${RELEASE}
   helm test ${RELEASE} --cleanup
   HELM_TEST_EXIT_CODE=$?
 fi
 
 # cleanup
-helm delete --purge ${RELEASE}
+echo Cleaning up
+helm delete --purge ${RELEASE} &
 exit ${HELM_TEST_EXIT_CODE}
