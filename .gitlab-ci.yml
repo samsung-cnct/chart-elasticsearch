@@ -34,8 +34,16 @@ helm_test:
   only:
     - tags
     - branches
+  variables:
+    NAMESPACE: ${CHART_NAME}-test
+    RELEASE: ${CHART_NAME}-test-${CI_PIPELINE_ID}
+  before_script:
+    - mkdir /root/.kube
+    - echo ${TEST_KUBECONFIG} | base64 -d > /root/.kube/config
+    - helm init
   script:
-    - build/test.sh
+    - build/lint.sh
+    - build/test-install.sh
 
 helm_publish_alpha:
   stage: publish
