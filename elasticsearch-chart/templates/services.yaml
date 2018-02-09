@@ -4,10 +4,13 @@ kind: Service
 metadata:
   name: {{.Values.name}}
   labels:
-    app: {{.Values.name}}
+    app: {{ template "name" . }}
     kubernetes.io/cluster-service: "true"
     addonmanager.kubernetes.io/mode: Reconcile
     kubernetes.io/name: "Elasticsearch"
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    release: "{{.Release.Name}}"
+    heritage: "{{.Release.Service}}"
 spec:
   ports:
   - port: {{.Values.port}}
@@ -27,6 +30,9 @@ metadata:
     kubernetes.io/cluster-service: "true"
     addonmanager.kubernetes.io/mode: Reconcile
     kubernetes.io/name: "Elasticsearch"
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    release: "{{.Release.Name}}"
+    heritage: "{{.Release.Service}}"
 spec:
   ports:
   - port: {{.Values.cluster_port}}
