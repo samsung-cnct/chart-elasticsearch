@@ -30,3 +30,5 @@ if [[ -d ${CHART_NAME}/templates/tests ]]; then
   helm test ${RELEASE} --cleanup
   HELM_TEST_EXIT_CODE=$?
 fi
+
+exit ${HELM_TEST_EXIT_CODE}
