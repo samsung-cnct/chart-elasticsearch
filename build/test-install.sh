@@ -30,17 +30,3 @@ if [[ -d ${CHART_NAME}/templates/tests ]]; then
   helm test ${RELEASE} --cleanup
   HELM_TEST_EXIT_CODE=$?
 fi
-
-# cleanup
-echo Cleaning up
-helm delete --purge ${RELEASE} &> /dev/null &
-
-echo Waiting for un-install
-sleep 600
-
-# Note: This assumes the default storage class has been
-# created with a reclaimPolicy of Delete. Otherwise the
-# PVs will need to be manually deleted.
-echo Deleting associated PVCs
-kubectl delete pvc -l app=elasticsearch -n  ${NAMESPACE}
-exit ${HELM_TEST_EXIT_CODE}
