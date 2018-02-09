@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-cluster-api-test"
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  # Test the elasticsearch cluster api: 
+  #   https://www.elastic.co/guide/en/elasticsearch/reference/5.2/cluster-health.html
+  containers:
+  - name: {{ .Release.Name }}-cluster-api-test
+    image: "{{.Values.test_image}}:{{.Values.test_tag}}"
+    command: ["curl", "http://{{.Values.name}}:9200/_cluster/health"]
+  restartPolicy: Never

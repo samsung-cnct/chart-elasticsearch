@@ -2,7 +2,11 @@ apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: {{.Values.master_name}}
-  namespace: {{.Values.namespace}}
+  labels:
+    app: {{ template "name" . }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    release: "{{.Release.Name}}"
+    heritage: "{{.Release.Service}}"
 spec:
   serviceName: "{{.Values.master_name}}"
   replicas: {{.Values.master_replicas}}
