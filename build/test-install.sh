@@ -36,7 +36,7 @@ echo Cleaning up
 helm delete --purge ${RELEASE} &> /dev/null &
 
 echo Waiting for un-install
-sleep 300
+sleep 600
 
 # Note: This assumes the default storage class has been
 # created with a reclaimPolicy of Delete. Otherwise the
