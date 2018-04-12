@@ -9,7 +9,7 @@ name: elasticsearch
 
 #Testing (just needs curl)
 test_image: quay.io/samsung_cnct/e2etester
-test_tag: 0.2
+test_tag: latest
 
 #Services
 port: 9200
