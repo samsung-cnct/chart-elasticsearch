@@ -33,6 +33,8 @@ echo Cleaning up
 echo Waiting for un-install
 
 while ! is_success; do
+  ((ATTEMPT++))
+
   [[ $ATTEMPT -ge $TRY_THRESH ]] && \
     {
       echo >&2 "helm was not able to delete/purge existing release: $RELEASE after $ATTEMPT tries."
@@ -43,7 +45,6 @@ while ! is_success; do
   wait
 
   echo >&2 "helm was unable to delete/purge $RELEASE on attempt $ATTEMPT"
-  ((ATTEMPT++))
 done
 
 # Note: This assumes the default storage class has been
