@@ -32,6 +32,9 @@ fi
 echo Cleaning up
 echo Waiting for un-install
 
+helm delete --purge "${RELEASE}" &> /dev/null &
+wait
+
 while ! is_success; do
   ((ATTEMPT++))
 
