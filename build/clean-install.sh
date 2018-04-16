@@ -36,25 +36,32 @@ echo Waiting for un-install
 # See CO-217 - helm delete/purge usually fails on the first
 # attempt.
 helm delete --purge "${RELEASE}" &> /dev/null &
-wait
 
-while ! is_success; do
-  ((ATTEMPT++))
+if ! wait; then
+  while ! is_success; do
+    ((ATTEMPT++))
 
-  [[ $ATTEMPT -ge $TRY_THRESH ]] && \
-    {
-      echo >&2 "helm was not able to delete/purge existing release: $RELEASE after $ATTEMPT tries."
-      break
-    }
+    [[ $ATTEMPT -ge $TRY_THRESH ]] && \
+      {
+        echo >&2 "helm was not able to delete/purge existing release: $RELEASE after $ATTEMPT tries."
+        break
+      }
 
-  helm delete --purge "${RELEASE}" &> /dev/null &
-  wait
+    helm delete --purge "${RELEASE}" &> /dev/null &
+    wait
 
-  # shellcheck disable=SC2181
-  [[ $? -gt 0 ]] && EXIT_CODE=$?
+    # shellcheck disable=SC2181
+    [[ $? -gt 0 ]] && EXIT_CODE=$?
 
-  echo >&2 "helm was unable to delete/purge $RELEASE on attempt $ATTEMPT"
-done
+    echo >&2 "helm was unable to delete/purge $RELEASE on attempt $ATTEMPT"
+  done
+else
+  if is_success; then
+    echo 'helm delete/purge appears to have succeeded'
+  else
+    echo >&2 'helm delete/purge appears to have FAILED'
+  fi
+fi
 
 # Note: This assumes the default storage class has been
 # created with a reclaimPolicy of Delete. Otherwise the
