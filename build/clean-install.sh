@@ -32,6 +32,8 @@ fi
 echo Cleaning up
 echo Waiting for un-install
 
+# See CO-217 - helm delete/purge usually fails on the first
+# attempt.
 helm delete --purge "${RELEASE}" &> /dev/null &
 wait
 
