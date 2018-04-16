@@ -43,7 +43,7 @@ while ! is_success; do
   [[ $ATTEMPT -ge $TRY_THRESH ]] && \
     {
       echo >&2 "helm was not able to delete/purge existing release: $RELEASE after $ATTEMPT tries."
-      exit 10
+      break
     }
 
   helm delete --purge "${RELEASE}" &> /dev/null &
