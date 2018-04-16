@@ -10,6 +10,7 @@ set -o pipefail
 CHART_NAME=${CHART_NAME:?CHART_NAME must be set}
 NAMESPACE=${NAMESPACE:?NAMESPACE must be set}
 RELEASE=${RELEASE:?RELEASE must be set}
+EXIT_CODE=0
 ATTEMPT=0
 TRY_THRESH=3
 
@@ -49,6 +50,9 @@ while ! is_success; do
   helm delete --purge "${RELEASE}" &> /dev/null &
   wait
 
+  # shellcheck disable=SC2181
+  [[ $? -gt 0 ]] && EXIT_CODE=$?
+
   echo >&2 "helm was unable to delete/purge $RELEASE on attempt $ATTEMPT"
 done
 
@@ -57,3 +61,7 @@ done
 # PVs will need to be manually deleted.
 echo Deleting associated PVCs
 kubectl delete pvc -l app=elasticsearch -n "${NAMESPACE}"
+
+# persist the exit code from `helm delete` if it was > 0
+[[ $EXIT_CODE ]] && exit $EXIT_CODE
+exit 0
