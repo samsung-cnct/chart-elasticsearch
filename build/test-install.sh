@@ -18,7 +18,9 @@ if [[ ! -d ${CHART_NAME} ]]; then
 fi
 
 # install
-helm install --replace --name "${RELEASE}" --namespace "${NAMESPACE}" ./"${CHART_NAME}"
+helm install --replace --name "${RELEASE}" --namespace "${NAMESPACE}" \
+             --set elasticsearch-chart.name="elasticsearch-${CI_JOB_ID}" \
+             ./"${CHART_NAME}"
 
 # wait for full es cluster to come up
 echo Waiting for install
