@@ -25,7 +25,7 @@ build_chart:
   only:
     - tags
     - branches
-  artifacts: 
+  artifacts:
     paths:
       - ${CHART_NAME}
   script:
@@ -50,7 +50,7 @@ helm_test:
 clean_test:
   image: $KUBECTL_IMAGE
   stage: clean
-  allow_failure: true
+  allow_failure: false
   only:
     - tags
     - branches
