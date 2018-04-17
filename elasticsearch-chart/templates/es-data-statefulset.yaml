@@ -3,7 +3,7 @@ kind: StatefulSet
 metadata:
   name: {{.Values.data_name}}
   labels:
-    app: {{ template "name" . }}
+    k8s-app: {{ template "name" . }}
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"
     release: "{{.Release.Name}}"
     heritage: "{{.Release.Service}}"
@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{.Values.name}}
+        k8s-app: {{.Values.name}}
         name: {{.Values.data_name}}
     spec:
       serviceAccount: {{.Values.name}}
