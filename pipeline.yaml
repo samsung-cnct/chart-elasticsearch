@@ -11,7 +11,7 @@ configs:
   - chart: elasticsearch-chart
     timeout: 600
     retries: 1
-    release: elasticsearch-chart
+    release: elasticsearch
 prod:  
   doDeploy: none
 
