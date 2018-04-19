@@ -16,5 +16,3 @@ maintainers:
   email: samsung.cloudnative@gmail.com
 icon: https://github.com/samsung-cnct/solas/docs/images/samsung-logo.svg
 engine: gotpl
-config:
-  timeout: 3600
