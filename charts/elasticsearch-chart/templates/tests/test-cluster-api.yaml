@@ -9,6 +9,6 @@ spec:
   #   https://www.elastic.co/guide/en/elasticsearch/reference/5.2/cluster-health.html
   containers:
   - name: {{ printf "%s-%s" .Release.Name "clusterapitest" | trunc 63 }}
-    image: "{{.Values.test_image}}:{{.Values.test_tag}}"
-    command: ["curl", "http://{{.Values.name}}:9200/_cluster/health"]
+    image: {{ .Values.test_image }}
+    command: ["curl", "http://{{ .Values.name }}:{{ .Values.port }}/_cluster/health"]
   restartPolicy: Never
