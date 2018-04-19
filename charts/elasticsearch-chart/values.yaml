@@ -7,8 +7,7 @@ image: quay.io/samsung_cnct/elasticsearch-container:prod
 name: elasticsearch
 
 #Testing (just needs curl)
-#test_image: quay.io/samsung_cnct/e2etester:0.2
-test_image: byrnedo/alpine-curl:0.1
+test_image: quay.io/samsung_cnct/e2etester:0.2
 
 #Services
 port: 9200
