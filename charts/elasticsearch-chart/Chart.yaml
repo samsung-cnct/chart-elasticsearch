@@ -1,13 +1,16 @@
+---
 name: elasticsearch-chart
-version: ${CHART_VER}-${CHART_REL}
-description: ElasticSearch Cluster Chart for Kubernetes
+version: 0.1.0
+description: Elasticsearch for Kubernetes
 keywords:
+- kraken
 - elasticsearch
 - logging
 - data
 home: https://github.com/samsung-cnct/chart-elasticsearch
 sources:
 - https://github.com/samsung-cnct/chart-elasticsearch
+- https://github.com/elastic/elasticsearch
 maintainers:
 - name: Samsung CNCT
   email: samsung.cloudnative@gmail.com

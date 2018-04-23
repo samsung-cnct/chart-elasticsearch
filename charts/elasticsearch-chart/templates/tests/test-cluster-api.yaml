@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ printf "%s-%s" .Release.Name "clusterapitest" | trunc 63 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  # Test the elasticsearch cluster api: 
+  #   https://www.elastic.co/guide/en/elasticsearch/reference/5.2/cluster-health.html
+  containers:
+  - name: {{ printf "%s-%s" .Release.Name "clusterapitest" | trunc 63 }}
+    image: {{ .Values.test_image }}
+    command: ["/bin/sh", "-c", "echo", "Disabling testing until this [CO-268] is complete"]
+  restartPolicy: Never

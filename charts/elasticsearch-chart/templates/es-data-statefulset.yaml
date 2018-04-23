@@ -1,20 +1,20 @@
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
-  name: {{.Values.master_name}}
+  name: {{.Values.data_name}}
   labels:
     app: {{ template "name" . }}
-    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    chart: {{ template "namewithversion" . }}
     release: "{{.Release.Name}}"
     heritage: "{{.Release.Service}}"
 spec:
-  serviceName: "{{.Values.master_name}}"
-  replicas: {{.Values.master_replicas}}
+  serviceName: "{{.Values.data_name}}"
+  replicas: {{.Values.data_replicas}}
   template:
     metadata:
       labels:
         app: {{.Values.name}}
-        name: {{.Values.master_name}}
+        name: {{.Values.data_name}}
     spec:
       serviceAccount: {{.Values.name}}
       serviceAccountName: {{.Values.name}}
@@ -30,14 +30,15 @@ spec:
         ports:
         - name: {{.Values.cluster_port_name}}
           containerPort: {{.Values.cluster_port}}
-        #  resource notes:  master is light weight so half a CPU.  Less then 4GB causes the container to OOM
+        - name: {{.Values.port_name}}
+          containerPort: {{.Values.port}}
         resources:
           limits:
-            cpu: {{.Values.master_cpu_limits}}
-            memory: {{.Values.master_memory_limits}}
+            cpu: {{.Values.data_cpu_limits}}
+            memory: {{.Values.data_memory_limits}}
           requests:
-            cpu: {{.Values.master_cpu_requests}}
-            memory: {{.Values.master_memory_requests}}
+            cpu: {{.Values.data_cpu_requests}}
+            memory: {{.Values.data_memory_requests}}
         securityContext:
           privileged: true
           capabilities:
@@ -46,18 +47,19 @@ spec:
               - SYS_RESOURCE
         env:
         - name: CLUSTER_NAME
-          value: "{{.Values.cluster_name}}"
+          value: "{{ .Values.cluster_name }}"
         - name: NODE_DATA
-          value: "false"
-        - name: NODE_MASTER
           value: "true"
-        - name: SERVICE
-          value: "{{.Values.cluster_name}}"
-        - name: HTTP_ENABLE
+        - name: NODE_MASTER
           value: "false"
-        #  the min/max *must* be the same due to elasticsearch 5.0 bootstrap checks
+        - name: SERVICE
+          value: "{{ .Values.cluster_name }}"
+        - name: HTTP_ENABLE
+          value: "true"
+        #  the min/max *must* be the same due to elasticsearch 5.0 bootstrap checks.  For a production settings
+        #  this should be 16GB.  Don't go over 32GB as the JVM starts to have issues.
         - name: ES_JAVA_OPTS
-          value: "-Xms{{ .Values.master_Xms_Xmx }} -Xmx{{ .Values.master_Xms_Xmx }} -Djava.net.preferIPv4Stack=true"
+          value: "-Xms{{ .Values.data_Xms_Xmx }} -Xmx{{ .Values.data_Xms_Xmx }} -Djava.net.preferIPv4Stack=true"
         - name: KUBERNETES_NAMESPACE
           valueFrom:
             fieldRef:
@@ -66,28 +68,28 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        imagePullPolicy: {{.Values.master_imagePullPolicy}}
+        imagePullPolicy: Always
         volumeMounts:
         - name: esdata
           mountPath: /usr/share/elasticsearch/data
-      {{- if .Values.master_tolerations }}
+      {{- if .Values.data_tolerations }}
       tolerations:
-      {{- range .Values.master_tolerations }}
+      {{- range .Values.data_tolerations }}
       - key: {{ .key | default ("") }}
         value: {{ .value | default ("")}}
         operator: {{ .operator | default ("Equal") }}
         effect: {{ .effect  | default ("")}}
       {{- end }}
       {{- end }}
-      {{- if .Values.master_scheduling.affinity }}
-      {{- if .Values.master_scheduling.affinity.node }}
-      {{- if .Values.master_scheduling.affinity.node.labels }}
+      {{- if .Values.data_scheduling.affinity }}
+      {{- if .Values.data_scheduling.affinity.node }}
+      {{- if .Values.data_scheduling.affinity.node.labels }}
       affinity:
         nodeAffinity:
-          {{ .Values.master_scheduling.affinity.node.type }}:
+          {{ .Values.data_scheduling.affinity.node.type }}:
             nodeSelectorTerms:
             - matchExpressions:
-                {{- range .Values.master_scheduling.affinity.node.labels }}
+                {{- range .Values.data_scheduling.affinity.node.labels }}
                 - key: {{ .key }}
                   operator: {{ .operator }}
                   values:
@@ -107,4 +109,5 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: {{.Values.master_volume_storage}}
+          #  set to small so when exploring with this the user doesn't accidentally create very large disks
+          storage: {{.Values.data_volume_storage}}

@@ -3,13 +3,11 @@
 # Declare name/value pairs to be passed into your templates.
 # name: value
 
-image: quay.io/samsung_cnct/elasticsearch-container
-tag: v0.2.0
+image: quay.io/samsung_cnct/elasticsearch-container:prod
 name: elasticsearch
 
 #Testing (just needs curl)
-test_image: quay.io/samsung_cnct/e2etester
-test_tag: 0.2
+test_image: quay.io/samsung_cnct/e2etester:0.2
 
 #Services
 port: 9200
