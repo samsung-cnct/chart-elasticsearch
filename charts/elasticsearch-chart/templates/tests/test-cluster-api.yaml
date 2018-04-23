@@ -10,5 +10,5 @@ spec:
   containers:
   - name: {{ printf "%s-%s" .Release.Name "clusterapitest" | trunc 63 }}
     image: {{ .Values.test_image }}
-    command: ["/bin/sh", "-c", "for i in 1 2 3 4 5; do curl http://{{ .Values.name }}.{{ .Release.Namespace }}:{{ .Values.port }}/_cluster/health ; sleep 600 ; done"]
+    command: ["/bin/sh", "-c", "echo", "Disabling testing until this [CO-268] is complete"]
   restartPolicy: Never
