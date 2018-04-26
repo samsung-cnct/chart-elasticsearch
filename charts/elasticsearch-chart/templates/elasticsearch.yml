@@ -1,3 +1,4 @@
+{{ define "elasticsearch.yml.tpl" }}
 cluster.name: ${CLUSTER_NAME}
 network.host: ${NETWORK_HOST}
 
@@ -27,3 +28,4 @@ path:
 bootstrap.memory_lock: true
 
 xpack.security.enabled: false
+{{ end }}
