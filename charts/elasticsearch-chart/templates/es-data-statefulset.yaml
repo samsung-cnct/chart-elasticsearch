@@ -71,7 +71,7 @@ spec:
         imagePullPolicy: Always
         volumeMounts:
         - name: esconfig 
-          mountPath: /elasticsearch/config/elasticsearch.yml
+          mountPath: /elasticsearch/config
         - name: esdata
           mountPath: /usr/share/elasticsearch/data
       {{- if .Values.data_tolerations }}

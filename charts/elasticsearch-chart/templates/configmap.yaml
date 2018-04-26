@@ -17,3 +17,7 @@ metadata:
   elasticsearch.yml: |-
     {{- include "elasticsearch.yml.tpl" . | indent 4}}
 {{ end }}
+  jvm.options: |-
+    {{- include "jvm.options.tpl" . | indent 4}}
+  elasticsearch.yml: |-
+    {{- include "log4j2.properties.tpl" . | indent 4}}
