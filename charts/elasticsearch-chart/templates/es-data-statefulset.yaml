@@ -70,6 +70,8 @@ spec:
               fieldPath: metadata.name
         imagePullPolicy: Always
         volumeMounts:
+        - name: esconfig 
+          mountPath: /elasticsearch/config/elasticsearch.yml
         - name: esdata
           mountPath: /usr/share/elasticsearch/data
       {{- if .Values.data_tolerations }}
@@ -101,6 +103,9 @@ spec:
       {{- end }}
       {{- end }}
   volumeClaimTemplates:
+    - name: esconfig
+      configMap:
+        name: {{ template "name" . }}
   - metadata:
       name: esdata
       annotations:
