@@ -100,10 +100,11 @@ spec:
       {{- end }}
       {{- end }}
       {{- end }}
+      volumes:
+      - name: esconfig
+        configMap:
+          name: {{ template "name" . }}
   volumeClaimTemplates:
-  - name: esconfig
-    configMap:
-      name: {{ template "name" . }}
   - metadata:
       name: esdata
       annotations:
