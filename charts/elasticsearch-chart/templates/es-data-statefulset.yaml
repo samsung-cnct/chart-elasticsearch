@@ -72,6 +72,9 @@ spec:
         volumeMounts:
         - name: esconfig 
           mountPath: /elasticsearch/config
+          items:
+          - key: elasticsearch.yml
+            path: elasticsearch.yml
         - name: esdata
           mountPath: /usr/share/elasticsearch/data
       {{- if .Values.data_tolerations }}

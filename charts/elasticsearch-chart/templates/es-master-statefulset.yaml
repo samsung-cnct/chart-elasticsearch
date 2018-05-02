@@ -104,6 +104,9 @@ spec:
       - name: esconfig
         configMap:
           name: {{ template "name" . }}
+          items:
+          - key: elasticsearch.yml
+            path: elasticsearch.yml
   volumeClaimTemplates:
   - metadata:
       name: esdata
