@@ -31,7 +31,5 @@ discovery:
   zen:
     ping.unicast.hosts: ${DISCOVERY_SERVICE}
     minimum_master_nodes: 2
-
-xpack.security.enabled: false
 {{ end }}
 
