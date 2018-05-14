@@ -41,3 +41,21 @@ spec:
   clusterIP: None
   selector:
     app: {{.Values.name}}
+
+---
+{{- if .Values.ingress }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{.Values.name}}
+spec:
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{.Values.data_name}}
+          servicePort: {{.Values.port}}
+
+{{- end }}
