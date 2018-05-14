@@ -43,7 +43,7 @@ spec:
     app: {{.Values.name}}
 
 ---
-{{- if .Values.ingress.host }}
+{{- if .Values.ingress }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
