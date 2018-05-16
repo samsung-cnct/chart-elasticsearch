@@ -55,7 +55,7 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: {{.Values.data_name}}
+          serviceName: {{.Values.name}}
           servicePort: {{.Values.port}}
 
 {{- end }}
