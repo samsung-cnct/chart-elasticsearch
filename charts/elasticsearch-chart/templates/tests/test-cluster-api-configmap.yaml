@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-%s" .Release.Name "clusterapitest" | trunc 63 }}
+data:
+  run.sh: |-
+    @test "Test that the cluster forms and is healthy" {
+
+        # Initial health status is "RED"
+        clusterHealth="RED"
+
+        #  run until either cluster status is GREEN or 10 minute timeout
+        timeout=0
+        until [ "${clusterHealth}" == "GREEN" || timeout -gt 600]; do
+          clusterHealth=$(curl -s --connect-timeout 1 \
+            --location \
+              http://elasticsearch.{{ .Release.Namespace }}:9200/_cat/health | \
+              cut -d ' ' -f 4)
+
+          # sleep for a 3 sec if failed
+          if [ "${clusterHealth} != "GREEN ]; then
+            echo "Will retry, clusterHealth is ${clusterHealth}"
+            timeout=timeout+3
+            sleep 3;
+          fi
+        done
+
+        
+        [ "${clusterHealth}" == "GREEN" ]
+    }

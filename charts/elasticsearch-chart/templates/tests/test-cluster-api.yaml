@@ -5,10 +5,36 @@ metadata:
   annotations:
     "helm.sh/hook": test-success
 spec:
-  # Test the elasticsearch cluster api: 
-  #   https://www.elastic.co/guide/en/elasticsearch/reference/5.2/cluster-health.html
+  initContainers:
+    - name: test-framework
+      image: dduportal/bats:0.4.0
+      command:
+      - "bash"
+      - "-c"
+      - |
+        set -ex
+        # copy bats to tools dir
+        cp -R /usr/local/libexec/ /tools/bats/
+      volumeMounts:
+      - mountPath: /tools
+        name: tools
   containers:
-  - name: {{ printf "%s-%s" .Release.Name "clusterapitest" | trunc 63 }}
-    image: {{ .Values.test_image }}
-    command: ["/bin/sh", "-c", "echo", "Disabling testing until this [CO-268] is complete"]
+    - name: {{ .Release.Name }}
+      # TODO: For production use we need to maintain our own version
+      # of this container. We can't depend on public artifacts,
+      # especially given that these are not tagged.
+      image: graze/bats #everpeace/curl-jq
+      command: ["/tools/bats/bats", "-t", "/tests/run.sh"]
+      volumeMounts:
+      - mountPath: /tests
+        name: tests
+        readOnly: true
+      - mountPath: /tools
+        name: tools
+  volumes:
+  - name: tests
+    configMap:
+      name: {{ template "fullname" . }}
+  - name: tools
+    emptyDir: {}
   restartPolicy: Never
