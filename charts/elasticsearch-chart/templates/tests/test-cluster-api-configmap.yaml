@@ -14,7 +14,7 @@ data:
         until [ "${clusterHealth}" == "GREEN" || timeout -gt 600]; do
           clusterHealth=$(curl -s --connect-timeout 1 \
             --location \
-              http://elasticsearch.{{ .Release.Namespace }}:9200/_cat/health | \
+              http://{{ .Name }}.{{ .Release.Namespace }}:9200/_cat/health | \
               cut -d ' ' -f 4)
 
           # sleep for a 3 sec if failed

@@ -69,7 +69,7 @@ spec:
             fieldRef:
               fieldPath: metadata.name
         - name: ELASTICSEARCH_SERVICE_NAME
-          value: service_name
+          value: "{{ .Values.service_name }}"
         imagePullPolicy: Always
       {{- if .Values.data_tolerations }}
       tolerations:
