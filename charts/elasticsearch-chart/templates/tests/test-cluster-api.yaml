@@ -34,7 +34,7 @@ spec:
   volumes:
   - name: tests
     configMap:
-      name: {{ template "fullname" . }}
+      name: {{ printf "%s-%s" .Release.Name "clusterapitest" | trunc 63 }}
   - name: tools
     emptyDir: {}
   restartPolicy: Never
