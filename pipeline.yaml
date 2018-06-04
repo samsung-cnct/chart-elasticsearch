@@ -2,14 +2,9 @@ type: chart
 envValues:
   - envVar: KUBECTL_VERSION
     value: v1.9.2
-rootfs:
-  - image: samsung_cnct/elasticsearch-container
-    context: elasticsearch
-    chart: elasticsearch-chart
-    value: image
 configs:
   - chart: elasticsearch-chart
-    timeout: 600
+    timeout: 1200
     retries: 1
     release: elasticsearch
 prod:  

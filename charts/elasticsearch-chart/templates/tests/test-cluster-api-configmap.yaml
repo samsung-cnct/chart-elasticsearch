@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-%s" .Release.Name "clusterapitest" | trunc 63 }}
+data:
+  run.sh: |-
+    @test "Test that the cluster forms and is healthy" {
+
+        # Initial health status is "RED"
+        clusterHealth="red"
+
+        #  run until either cluster status is green or 10 minute timeout
+        timeout=0
+        until [ "${clusterHealth}" == "green" -o ${timeout} -gt 600 ]; do
+          clusterHealth=$(curl -s --connect-timeout 1 \
+            --location \
+              http://{{ .Values.name }}.{{ .Release.Namespace }}:9200/_cat/health | \
+              cut -d ' ' -f 4)
+
+          # sleep for a 3 sec if failed
+          if [ "${clusterHealth}" != "green" ]; then
+            echo "Will retry, clusterHealth is ${clusterHealth}"
+            timeout=$((${timeout}+3))
+            sleep 3;
+          fi
+        done
+
+        
+        [ "${clusterHealth}" == "green" ]
+    }
+    
