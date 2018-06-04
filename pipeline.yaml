@@ -4,7 +4,7 @@ envValues:
     value: v1.9.2
 configs:
   - chart: elasticsearch-chart
-    timeout: 600
+    timeout: 1200
     retries: 1
     release: elasticsearch
 prod:  
