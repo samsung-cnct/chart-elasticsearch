@@ -1,5 +1,5 @@
 ---
-kind: ClusterRole
+kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
   name: {{.Values.name}}
@@ -16,7 +16,7 @@ rules:
   verbs: ["get"]
 
 ---
-kind: ClusterRoleBinding
+kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
   name: {{.Values.name}}
