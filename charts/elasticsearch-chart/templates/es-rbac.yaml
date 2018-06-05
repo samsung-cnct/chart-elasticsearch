@@ -11,9 +11,13 @@ metadata:
     release: "{{.Release.Name}}"
     heritage: "{{.Release.Service}}"
 rules:
-- apiGroups: [""]
-  resources: ["services", "namespaces", "endpoints"]
-  verbs: ["get"]
+- apiGroups:
+  - ""
+  resources:
+  - services
+  - endpoints
+  verbs:
+  - get
 
 ---
 kind: RoleBinding
@@ -33,6 +37,6 @@ subjects:
   namespace: {{.Release.Namespace}}
   apiGroup: ""
 roleRef:
-  kind: ClusterRole
+  kind: Role
   name: {{.Values.name}}
   apiGroup: ""
