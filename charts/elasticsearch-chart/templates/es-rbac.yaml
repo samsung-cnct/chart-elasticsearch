@@ -1,5 +1,5 @@
 ---
-kind: ClusterRole
+kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
   name: {{.Values.name}}
@@ -11,12 +11,17 @@ metadata:
     release: "{{.Release.Name}}"
     heritage: "{{.Release.Service}}"
 rules:
-- apiGroups: [""]
-  resources: ["services", "namespaces", "endpoints"]
-  verbs: ["get"]
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  - services
+  - endpoints
+  verbs:
+  - get
 
 ---
-kind: ClusterRoleBinding
+kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
   name: {{.Values.name}}
@@ -33,6 +38,6 @@ subjects:
   namespace: {{.Release.Namespace}}
   apiGroup: ""
 roleRef:
-  kind: ClusterRole
+  kind: Role
   name: {{.Values.name}}
   apiGroup: ""
