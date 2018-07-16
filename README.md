@@ -1,11 +1,9 @@
-[![pipeline status](https://git.cnct.io/common-tools/samsung-cnct_chart-elasticsearch/badges/master/pipeline.svg)](https://git.cnct.io/common-tools/samsung-cnct_chart-elasticsearch/commits/master)
-
 # Chart for Elasticsearch
 
 A Helm chart for Elasticsearch deployment on Kubernetes. Elasticsearch is an open source, RESTful search engine built on top of Apache Lucene and released under an Apache license. It is Java-based and can search and index document files in diverse formats.
 
 ## Purpose
-Static configs for a production grade elasticsearch deploy on kubernetes. Meant for use with [this](https://quay.io/repository/samsung_cnct/elasticsearch-container) image on quay.
+Static configs for a production grade elasticsearch deploy on kubernetes.
 
 ## Architecture details
 master nodes:
