@@ -49,6 +49,10 @@ master_scheduling:
       # - key: iamalabelkey
       #   operator: In
       #   values: ["value1", "value2"]
+# Peristent Valume Setup
+#   Note the value must match the name of a pre-created Storage Class
+master_storage_class_key: "volume.beta.kubernetes.io/storage-class"
+master_storage_class_value: "anything"
 
 #Cluster StatefulSet
 data_name: elasticsearch-data
@@ -84,3 +88,8 @@ data_scheduling:
 #  outside the cluster, set the ingress.host value
 #ingress:
 #  host: elasticsearch.ingest.company.org
+#
+# Peristent Valume Setup
+#   Note the value must match the name of a pre-created Storage Class
+data_storage_class_key: "volume.beta.kubernetes.io/storage-class"
+data_storage_class_value: "anything"

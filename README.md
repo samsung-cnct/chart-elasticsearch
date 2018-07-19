@@ -30,7 +30,7 @@ data nodes (each):
 Install Helm and the Helm registry plugin with [these](https://github.com/app-registry/appr-helm-plugin/blob/master/README.md#install-the-helm-registry-plugin) instructions.
 
 ```
-helm registry install quay.io/samsung_cnct/elasticsearch-chart
+helm registry install charts.migrations.cnct.io https://charts.migrations.cnct.io
 ```
 
 ## How to implement on running Kubernetes cluster with `kubectl`
