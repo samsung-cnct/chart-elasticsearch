@@ -1,5 +1,7 @@
 # Chart for Elasticsearch
 
+[![Build Status](https://jenkins.migrations.cnct.io/buildStatus/icon?job=pipeline-elasticsearch/master)](https://jenkins.migrations.cnct.io/job/pipeline-elasticsearch/job/master)
+
 A Helm chart for Elasticsearch deployment on Kubernetes. Elasticsearch is an open source, RESTful search engine built on top of Apache Lucene and released under an Apache license. It is Java-based and can search and index document files in diverse formats.
 
 ## Purpose
