@@ -25,17 +25,11 @@ data nodes (each):
  - 20GB of disk (this should be increased greatly for production use)
 
  ## Installation
- ### From our chart repository
  ``` 
  helm repo add cnct https://charts.migrations.cnct.io
  helm repo update
  helm install cnct/chart-elasticsearch 
  ```  
- ### To install from local repository
-
- ```
- helm install --name my-release --namespace my-namespace ./chart-elasticsearch
- ```
 
 ## Curator
 This deployment is meant for use with Elasticsearch curator to manage indices.
