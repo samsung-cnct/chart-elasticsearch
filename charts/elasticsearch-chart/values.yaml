@@ -19,6 +19,10 @@ cluster_port_name: cluster-comms
 service_name: elasticsearch-discovery
 
 #Master StatefulSet
+#
+# Need a storage class for CI testing
+master_create_storage_class: false
+#
 master_name: elasticsearch-master
 # master_replicas: if changing this value, please also update the
 # elasticsearch configuration file quorum settings in the
@@ -49,8 +53,15 @@ master_scheduling:
       # - key: iamalabelkey
       #   operator: In
       #   values: ["value1", "value2"]
+# Peristent Valume Setup
+#   Note the value must match the name of a pre-created Storage Class
+master_storage_class_key: "volume.beta.kubernetes.io/storage-class"
+master_storage_class_value: "anything"
 
 #Cluster StatefulSet
+# Need a storage class for CI testing
+data_create_storage_class: false
+#
 data_name: elasticsearch-data
 # data_replicas: This can be changed at will for scaling purposes
 # either in this chart or at the command line during production
@@ -84,3 +95,8 @@ data_scheduling:
 #  outside the cluster, set the ingress.host value
 #ingress:
 #  host: elasticsearch.ingest.company.org
+#
+# Peristent Valume Setup
+#   Note the value must match the name of a pre-created Storage Class
+data_storage_class_key: "volume.beta.kubernetes.io/storage-class"
+data_storage_class_value: "anything"

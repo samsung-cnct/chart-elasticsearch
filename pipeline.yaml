@@ -2,11 +2,21 @@ type: chart
 envValues:
   - envVar: KUBECTL_VERSION
     value: v1.9.2
-configs:
+deployments:
   - chart: elasticsearch-chart
     timeout: 1200
     retries: 1
     release: elasticsearch
+    test:
+      values:
+        - key: data_create_storage_class
+          value: true
+        - key: master_create_storage_class
+          value: true
+        - key: data_storage_class_value
+          value: esdatasc
+        - key: master_storage_class_value
+          value: esmastersc
 prod:  
   doDeploy: none
 
