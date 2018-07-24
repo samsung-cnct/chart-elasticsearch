@@ -1,11 +1,11 @@
-[![pipeline status](https://git.cnct.io/common-tools/samsung-cnct_chart-elasticsearch/badges/master/pipeline.svg)](https://git.cnct.io/common-tools/samsung-cnct_chart-elasticsearch/commits/master)
-
 # Chart for Elasticsearch
+
+[![Build Status](https://jenkins.migrations.cnct.io/buildStatus/icon?job=pipeline-elasticsearch/master)](https://jenkins.migrations.cnct.io/job/pipeline-elasticsearch/job/master)
 
 A Helm chart for Elasticsearch deployment on Kubernetes. Elasticsearch is an open source, RESTful search engine built on top of Apache Lucene and released under an Apache license. It is Java-based and can search and index document files in diverse formats.
 
 ## Purpose
-Static configs for a production grade elasticsearch deploy on kubernetes. Meant for use with [this](https://quay.io/repository/samsung_cnct/elasticsearch-container) image on quay.
+Static configs for a production grade elasticsearch deploy on kubernetes.
 
 ## Architecture details
 master nodes:
@@ -26,20 +26,12 @@ data nodes (each):
  - 1/2 CPU (500m)
  - 20GB of disk (this should be increased greatly for production use)
 
-## How to install on running Kubernetes cluster with `helm`
-Install Helm and the Helm registry plugin with [these](https://github.com/app-registry/appr-helm-plugin/blob/master/README.md#install-the-helm-registry-plugin) instructions.
-
-```
-helm registry install charts.migrations.cnct.io https://charts.migrations.cnct.io
-```
-
-## How to implement on running Kubernetes cluster with `kubectl`
-```
-kubectl create -f es-data-statefulset.yaml
-kubectl create -f es-master-statefulset.yaml
-kubectl create -f services.yaml
-```
-For cluster with kubernetes version >= 1.6, `kubectl create -f es-rbac.yaml`
+ ## Installation
+ ``` 
+ helm repo add cnct https://charts.migrations.cnct.io
+ helm repo update
+ helm install cnct/chart-elasticsearch 
+ ```  
 
 ## Curator
 This deployment is meant for use with Elasticsearch curator to manage indices.
