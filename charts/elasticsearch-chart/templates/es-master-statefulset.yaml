@@ -114,7 +114,7 @@ spec:
           mountPath: /elasticsearch/config/elasticsearch.yml
           subPath: elasticsearch.yml
         - name: esdata
-          mountPath: /usr/elasticsearh/data
+          mountPath: /usr/elasticsearch/data
       volumes:
       - name: esconfig
         configMap:
