@@ -3,7 +3,7 @@
 # Declare name/value pairs to be passed into your templates.
 # name: value
 
-image: k8s.gcr.io/elasticsearch:v6.2.4
+image: docker.elastic.co/elasticsearch/elasticsearch-platinum:6.2.4
 name: elasticsearch
 
 #Testing (just needs curl)
@@ -17,6 +17,13 @@ cluster_name: elasticsearch-cluster
 cluster_port: 9300
 cluster_port_name: cluster-comms
 service_name: elasticsearch-discovery
+
+#enviroment
+xpack_security_enabled: XPACK.SECURITY.ENABLED
+xpack_security_value: "true"
+
+elastic_password: ELASTIC_PASSWORD
+elastic_password_value: "changeme"
 
 #Master StatefulSet
 #
