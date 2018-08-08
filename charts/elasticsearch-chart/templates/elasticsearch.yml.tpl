@@ -1,6 +1,8 @@
 {{ define "elasticsearch.yml.tpl" }}
 cluster.name: ${CLUSTER_NAME}
 network.host: ${NETWORK_HOST}
+action.auto_create_index:true
+xpack.license.self_generated.type: trial
 
 node:
   master: ${NODE_MASTER}
@@ -9,7 +11,7 @@ node:
   ingest: false
 
 path:
-  data: /usr/share/elasticsearch/data
+  data: /usr/elasticsearch/data
   logs: /usr/share/elasticsearch/logs
 
 bootstrap:
