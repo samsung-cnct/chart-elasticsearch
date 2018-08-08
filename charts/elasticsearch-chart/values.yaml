@@ -18,6 +18,13 @@ cluster_port: 9300
 cluster_port_name: cluster-comms
 service_name: elasticsearch-discovery
 
+#enviroment
+xpack_security_enabled: XPACK.SECURITY.ENABLED
+xpack_security_value: "true"
+
+elastic_password: ELASTIC_PASSWORD
+elastic_password_value: "changeme"
+
 #Master StatefulSet
 #
 # Need a storage class for CI testing
