@@ -92,15 +92,15 @@ spec:
         effect: {{ .effect  | default ("")}}
       {{- end }}
       {{- end }}
-      {{- if .Values.master_scheduling.affinity }}
-      {{- if .Values.master_scheduling.affinity.node }}
-      {{- if .Values.master_scheduling.affinity.node.labels }}
+      {{- if .Values.data_scheduling.affinity }}
+      {{- if .Values.data_scheduling.affinity.node }}
+      {{- if .Values.data_scheduling.affinity.node.labels }}
       affinity:
         nodeAffinity:
-          {{ .Values.master_scheduling.affinity.node.type }}:
+          {{ .Values.data_scheduling.affinity.node.type }}:
             nodeSelectorTerms:
             - matchExpressions:
-                {{- range .Values.master_scheduling.affinity.node.labels }}
+                {{- range .Values.data_scheduling.affinity.node.labels }}
                 - key: {{ .key }}
                   operator: {{ .operator }}
                   values:
