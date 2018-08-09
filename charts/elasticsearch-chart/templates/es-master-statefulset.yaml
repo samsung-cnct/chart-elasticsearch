@@ -45,14 +45,12 @@ spec:
               - IPC_LOCK
               - SYS_RESOURCE
         env:
-        {{- range $key, $value := .Values.env }}
-          - name: "{{ $key }}"
-            value: "{{ $value }}"
-        {{- end }}
         {{- range $key, $value := .Values.master_envs }}
           - name: "{{ $key }}"
             value: "{{ $value }}"
         {{- end }}
+          - name: ELASTIC_PASSWORD
+            value: "changeme"
           - name: CLUSTER_NAME
             value: "{{ .Values.cluster_name }}"
           - name: SERVICE

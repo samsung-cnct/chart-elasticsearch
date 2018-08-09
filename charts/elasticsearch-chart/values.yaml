@@ -21,9 +21,7 @@ service_name: elasticsearch-discovery
 envs: 
   XPACK_SECURITY_ENABLED: "true"
   ELASTIC_PASSWORD: "changeme"
-  ACTION_AUTO_CREATE_INDEX: "true"
-  XPACK_LICENSE_SELF_GENERATED_TYPE: "trial"
-  
+    
 data_envs: 
   HTTP_ENABLE: "true"
   NODE_DATA: "true"
