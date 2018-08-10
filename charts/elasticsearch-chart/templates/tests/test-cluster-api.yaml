@@ -23,7 +23,7 @@ spec:
       # TODO: For production use we need to maintain our own version
       # of this container. We can't depend on public artifacts,
       # especially given that these are not tagged.
-      image: graze/bats #everpeace/curl-jq
+      image: {{ .Values.test.image }} 
       command: ["/tools/bats/bats", "-t", "/tests/run.sh"]
       volumeMounts:
       - mountPath: /tests
