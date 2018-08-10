@@ -6,8 +6,11 @@
 image: docker.elastic.co/elasticsearch/elasticsearch-platinum:6.2.4
 name: elasticsearch
 
-#Testing (just needs curl)
-test_image: quay.io/samsung_cnct/e2etester:0.2
+#Testing (just needs curl, bats)
+test:
+  image: quay.io/samsung_cnct/e2etester:0.2
+  account: elastic
+  password: changeme
 
 #Services
 port: 9200
