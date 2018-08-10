@@ -50,7 +50,7 @@ spec:
             value: "{{ $value }}"
         {{- end }}
           - name: ELASTIC_PASSWORD
-            value: "changeme"
+            value: {{ .Values.elastic_password }}
           - name: CLUSTER_NAME
             value: "{{ .Values.cluster_name }}"
           - name: SERVICE

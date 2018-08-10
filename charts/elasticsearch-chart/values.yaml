@@ -18,11 +18,10 @@ cluster_port: 9300
 cluster_port_name: cluster-comms
 service_name: elasticsearch-discovery
 
-envs: 
-  XPACK_SECURITY_ENABLED: "true"
-  ELASTIC_PASSWORD: "changeme"
-    
-data_envs: 
+elastic_password_name: ELASTIC_PASSWORD
+elastic_password_value: changeme
+
+data_envs:
   HTTP_ENABLE: "true"
   NODE_DATA: "true"
   NODE_MASTER: "false"
