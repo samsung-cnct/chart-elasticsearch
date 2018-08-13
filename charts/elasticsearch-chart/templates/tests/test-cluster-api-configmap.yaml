@@ -17,9 +17,10 @@ data:
             --location http://{{ .Values.name }}.{{ .Release.Namespace }}:9200/_cat/health | \
               cut -d ' ' -f 4)
 
+          echo "ES cluster health ${clusterHealth}" >&3
           # sleep for a 3 sec if failed
           if [ "${clusterHealth}" != "green" ]; then
-            echo "Will retry, clusterHealth is ${clusterHealth}"
+            echo "Will retry, clusterHealth is ${clusterHealth}" >&3
             timeout=$((${timeout}+3))
             sleep 3;
           fi
