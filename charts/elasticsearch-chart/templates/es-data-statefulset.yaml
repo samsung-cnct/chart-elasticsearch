@@ -48,6 +48,10 @@ spec:
         env:
         - name: CLUSTER_NAME
           value: "{{ .Values.cluster_name }}"
+        - name: "{{.Values.xpack_security_enabled}}"
+          value: "{{.Values.xpack_security_value}}"
+        - name: "{{.Values.elastic_password}}"
+          value: "{{.Values.elastic_password_value}}"
         - name: NODE_DATA
           value: "true"
         - name: NODE_MASTER
@@ -56,6 +60,10 @@ spec:
           value: "{{ .Values.cluster_name }}"
         - name: HTTP_ENABLE
           value: "true"
+        - name: ACTION.AUTO_CREATE_INDEX
+          value: "true"
+        - name: XPACK.LICENSE.SELF_GENERATED.TYPE
+          value: "trial"
         #  the min/max *must* be the same due to elasticsearch 5.0 bootstrap checks.  For a production settings
         #  this should be 16GB.  Don't go over 32GB as the JVM starts to have issues.
         - name: ES_JAVA_OPTS
@@ -108,7 +116,7 @@ spec:
           mountPath: /elasticsearch/config/elasticsearch.yml
           subPath: elasticsearch.yml
         - name: esdata
-          mountPath: /usr/share/elasticsearch/data
+          mountPath: /usr/elasticsearch/data
       volumes:
       - name: esconfig
         configMap:
@@ -117,7 +125,7 @@ spec:
   - metadata:
       name: esdata
       annotations:
-              {{ .Values.data_storage_class_key }}: {{ .Values.data_storage_class_value }} 
+              {{ .Values.data_storage_class_key }}: {{ .Values.data_storage_class_value }}
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:

@@ -9,7 +9,7 @@ node:
   ingest: false
 
 path:
-  data: /usr/share/elasticsearch/data
+  data: /usr/elasticsearch/data
   logs: /usr/share/elasticsearch/logs
 
 bootstrap:
