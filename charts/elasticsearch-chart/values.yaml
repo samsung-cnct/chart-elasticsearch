@@ -28,7 +28,7 @@ elastic_password_value: "changeme"
 #Master StatefulSet
 #
 # Need a storage class for CI testing
-master_create_storage_class: true
+master_create_storage_class: false
 #
 master_name: elasticsearch-master
 # master_replicas: if changing this value, please also update the
