@@ -16,10 +16,11 @@ test:
 port: 9200
 port_name: http
 port_selector: elasticsearch-data
-cluster_name: elasticsearch-cluster
+cluster_name: elasticsearch-cluster-mln
 cluster_port: 9300
 cluster_port_name: cluster-comms
 service_name: elasticsearch-discovery
+network_host: 0.0.0.0
 
 elastic_password: changeme
 
@@ -27,11 +28,17 @@ data_envs:
   HTTP_ENABLE: "true"
   NODE_DATA: "true"
   NODE_MASTER: "false"
+  HTTP_CORS_ENABLE: "false"
+  HTTP_CORS_ALLOW_ORIGIN: ""
+  MEMORY_LOCK: "false"
   
 master_envs: 
   HTTP_ENABLE: "false"
   NODE_DATA: "false"
   NODE_MASTER: "true"
+  HTTP_CORS_ENABLE: "false"
+  HTTP_CORS_ALLOW_ORIGIN: ""
+  MEMORY_LOCK: "false"
 
 #Master StatefulSet
 #
@@ -69,6 +76,8 @@ master_scheduling:
       #   operator: In
       #   values: ["value1", "value2"]
 # Peristent Valume Setup
+# Data mount point
+master_data_mount: "/usr/elasticsearch/data"
 #   Note the value must match the name of a pre-created Storage Class
 master_storage_class_key: "volume.beta.kubernetes.io/storage-class"
 master_storage_class_value: "anything"
@@ -111,6 +120,8 @@ data_scheduling:
 #ingress:
 #  host: elasticsearch.ingest.company.org
 #
+# Data mount point
+data_data_mount: "/usr/elasticsearch/data"
 # Peristent Valume Setup
 #   Note the value must match the name of a pre-created Storage Class
 data_storage_class_key: "volume.beta.kubernetes.io/storage-class"
