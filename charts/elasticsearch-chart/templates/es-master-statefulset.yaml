@@ -24,6 +24,12 @@ spec:
         imagePullPolicy: IfNotPresent
         command: ["sysctl", "-w", "vm.max_map_count=262144"]
         securityContext: {"privileged": true}
+      - name: chown
+        image: {{.Values.image}}
+        command: ["chown", "-v", "elasticsearch:elasticsearch", {{ .Values.master_data_mount | quote }} ]
+        volumeMounts:
+        - name: esdata
+          mountPath: {{ .Values.master_data_mount }}
       containers:
       - name: {{.Values.name}}
         image: {{.Values.image}}
@@ -55,6 +61,10 @@ spec:
             value: "{{ .Values.cluster_name }}"
           - name: SERVICE
             value: "{{ .Values.cluster_name }}"
+          - name: NETWORK_HOST
+            value: "{{ .Values.network_host }}"
+          - name: DATA_MOUNT
+            value: "{{ .Values.master_data_mount }}"
         #  the min/max *must* be the same due to elasticsearch 5.0 bootstrap checks
           - name: ES_JAVA_OPTS
             value: "-Xms{{ .Values.master_Xms_Xmx }} -Xmx{{ .Values.master_Xms_Xmx }} -Djava.net.preferIPv4Stack=true"
@@ -66,7 +76,7 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
-          - name: ELASTICSEARCH_SERVICE_NAME
+          - name: DISCOVERY_SERVICE
             value: "{{ .Values.service_name }}"
           - name: "NAMESPACE"
             valueFrom:
@@ -103,10 +113,10 @@ spec:
       {{- end }}
         volumeMounts:
         - name: esconfig
-          mountPath: /elasticsearch/config/elasticsearch.yml
+          mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
           subPath: elasticsearch.yml
         - name: esdata
-          mountPath: /usr/elasticsearch/data
+          mountPath: {{ .Values.master_data_mount }}
       volumes:
       - name: esconfig
         configMap:
