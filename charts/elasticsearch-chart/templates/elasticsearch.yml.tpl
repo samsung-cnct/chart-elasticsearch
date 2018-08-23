@@ -35,6 +35,10 @@ discovery:
 action.auto_create_index: true 
 xpack.security.enabled: true 
 xpack.license.self_generated.type: trial 
+xpack.monitoring.enabled: false
+#xpack.monitoring.exporters.my_local:
+#  type: local
+#  use_ingest: false
 
 {{ end }}
 
