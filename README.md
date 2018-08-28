@@ -30,7 +30,7 @@ data nodes (each):
  ``` 
  helm repo add cnct https://charts.migrations.cnct.io
  helm repo update
- helm install cnct/chart-elasticsearch 
+ helm install cnct/elasticsearch-chart
  ```  
 
 ## Curator
