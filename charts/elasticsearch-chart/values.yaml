@@ -6,6 +6,9 @@
 image: docker.elastic.co/elasticsearch/elasticsearch-platinum:6.2.4
 name: elasticsearch
 
+cluster_name: elasticsearch-cluster
+network_host: 0.0.0.0
+
 #Testing (just needs curl, bats)
 test:
   image: quay.io/samsung_cnct/e2etester:prod
@@ -13,16 +16,32 @@ test:
   password: changeme
 
 #Services
-port: 9200
-port_name: http
-port_selector: elasticsearch-data
-cluster_name: elasticsearch-cluster
-cluster_port: 9300
-cluster_port_name: cluster-comms
-service_name: elasticsearch-discovery
-network_host: 0.0.0.0
+services:
+  es:
+    name: elasticsearch
+    port: 9200
+    port_name: http
+    # public: false then no type and nodeport: none
+    public: false
+    # public: true then type is used.  set annotation for public DNS also
+    type: LoadBalancer
+    annotations:
+    - key: external-dns.alpha.kubernetes.io/hostname
+      # The domain will have to be pre-allocated in route53.
+      # add your service name.
+      # e.g. mikeln.cluster.cnct.io. is already allocated
+      #      value: esnew.mikeln.cluster.cnct.io. is the public name for this service
+      value: esnew.<yourcluster>.cluster.cnct.io.
+  discovery:
+    service_name: elasticsearch-discovery
+    cluster_port: 9300
+    cluster_port_name: cluster-comms
+    app_selector: elasticsearch-data
 
-elastic_password: changeme
+security:
+  # NOTE: THIS NEEDS TO MOVE TO A SECRET INTEAD 9/11/2018
+  account: elastic
+  password: changeme
 
 data_envs:
   HTTP_ENABLE: "true"

@@ -2,7 +2,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{.Values.name}}
+  name: {{ .Values.services.es.name }}
+  {{- if .Values.services.es.annotations }}
+  annotations:
+    {{- range .Values.services.es.annotations }}
+    {{ .key }}: "{{ .value }}"
+    {{- end }}
+  {{- end }}
   labels:
     app: {{ template "name" . }}
     kubernetes.io/cluster-service: "true"
@@ -13,19 +19,23 @@ metadata:
     heritage: "{{.Release.Service}}"
 spec:
   ports:
-  - port: {{.Values.port}}
-    name: {{.Values.port_name}}
+  - port: {{ .Values.services.es.port }}
+    name: {{ .Values.services.es.port_name }}
+{{- if .Values.services.es.public }}
+  type: {{ .Values.services.es.type }}
+{{- else }}
   clusterIP: None
+{{- end }}
   selector:
-    name: {{.Values.port_selector}}
+    name: {{ .Values.services.discovery.app_selector }}
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{.Values.service_name}}
+  name: {{.Values.services.discovery.service_name}}
   labels:
-    app: {{.Values.cluster_name}}
+    app: {{ .Values.cluster_name }}
     name: {{ .Values.master_name}}
     kubernetes.io/cluster-service: "true"
     addonmanager.kubernetes.io/mode: Reconcile
@@ -35,8 +45,8 @@ metadata:
     heritage: "{{.Release.Service}}"
 spec:
   ports:
-  - port: {{.Values.cluster_port}}
-    name: {{.Values.cluster_port_name}}
+  - port: {{ .Values.services.discovery.cluster_port }}
+    name: {{ .Values.services.discovery.cluster_port_name }}
     protocol: TCP
   clusterIP: None
   selector:
@@ -55,7 +65,7 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: {{.Values.name}}
-          servicePort: {{.Values.port}}
+          serviceName: {{ .Values.services.es.name }}
+          servicePort: {{ .Values.services.es.port }}
 
 {{- end }}
