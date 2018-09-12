@@ -22,7 +22,7 @@ services:
     port: 9200
     port_name: http
     # public: false then no type and nodeport: none
-    public: true
+    public: false
     # public: true then type is used.  set annotation for public DNS also
     type: LoadBalancer
     annotations:
@@ -31,7 +31,7 @@ services:
       # add your service name.
       # e.g. mikeln.cluster.cnct.io. is already allocated
       #      value: esnew.mikeln.cluster.cnct.io. is the public name for this service
-      value: esnew.mikeln.cluster.cnct.io.
+      value: esnew.<yourcluster>.cluster.cnct.io.
   discovery:
     service_name: elasticsearch-discovery
     cluster_port: 9300

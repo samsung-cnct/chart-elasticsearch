@@ -17,6 +17,8 @@ deployments:
           value: esdatasc
         - key: master_storage_class_value
           value: esmastersc
+        - key: services.es.public
+          value: false
 prod:  
   doDeploy: none
 
