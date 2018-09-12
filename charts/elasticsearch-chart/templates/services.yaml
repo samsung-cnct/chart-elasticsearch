@@ -65,7 +65,7 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: {{.Values.name}}
+          serviceName: {{ .Values.services.es.name }}
           servicePort: {{ .Values.services.es.port }}
 
 {{- end }}
