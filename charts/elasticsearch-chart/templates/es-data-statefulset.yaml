@@ -34,10 +34,10 @@ spec:
       - name: {{.Values.name}}
         image: {{.Values.image}}
         ports:
-        - name: {{.Values.cluster_port_name}}
-          containerPort: {{.Values.cluster_port}}
-        - name: {{.Values.port_name}}
-          containerPort: {{.Values.port}}
+        - name: {{ .Values.services.discovery.cluster_port_name }}
+          containerPort: {{ .Values.services.discovery.cluster_port }}
+        - name: {{ .Values.services.es.port_name }}
+          containerPort: {{.Values.services.es.port}}
         resources:
           limits:
             cpu: {{.Values.data_cpu_limits}}
@@ -57,7 +57,7 @@ spec:
             value: "{{ $value }}"
         {{- end }}
           - name: ELASTIC_PASSWORD
-            value: {{ .Values.elastic_password }}
+            value: {{ .Values.security.password }}
           - name: CLUSTER_NAME
             value: "{{ .Values.cluster_name }}"
           - name: SERVICE
@@ -79,7 +79,7 @@ spec:
               fieldRef:
                 fieldPath: metadata.name
           - name: DISCOVERY_SERVICE
-            value: "{{ .Values.service_name }}"
+            value: "{{ .Values.services.discovery.service_name }}"
           - name: "NAMESPACE"
             valueFrom:
               fieldRef:
