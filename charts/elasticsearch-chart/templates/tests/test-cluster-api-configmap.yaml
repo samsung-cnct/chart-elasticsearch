@@ -13,7 +13,7 @@ data:
         timeout=0
         until [ "${clusterHealth}" == "green" -o ${timeout} -gt 600 ]; do
           run curl -s --connect-timeout 1 \
-          -u {{ .Values.test.account }}:{{ .Values.test.password }} \
+          -u {{ .Values.test.account }}:${ELASTIC_PASSWORD} \
             --location http://{{ .Values.name }}.{{ .Release.Namespace }}:9200/_cat/health 
 
           if [ $status -ne 0 ];then

@@ -25,6 +25,12 @@ spec:
       # especially given that these are not tagged.
       image: {{ .Values.test.image }} 
       command: ["/tools/bats/bats", "-t", "/tests/run.sh"]
+      env:
+      - name: ELASTIC_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: {{ template "fullname" . }}-auth
       volumeMounts:
       - mountPath: /tests
         name: tests
