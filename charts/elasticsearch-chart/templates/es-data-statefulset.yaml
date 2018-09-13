@@ -66,6 +66,8 @@ spec:
             value: "{{ .Values.network_host }}"
           - name: DATA_MOUNT
             value: "{{ .Values.data_data_mount }}"
+          - name: XPACK_SECURITY_ENABLED
+            value: "{{ .Values.xpack_security_enabled }}"
         #  the min/max *must* be the same due to elasticsearch 5.0 bootstrap checks.  For a production settings
         #  this should be 16GB.  Don't go over 32GB as the JVM starts to have issues.
           - name: ES_JAVA_OPTS
