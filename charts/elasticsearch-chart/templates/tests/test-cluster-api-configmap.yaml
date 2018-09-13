@@ -6,24 +6,26 @@ data:
   run.sh: |-
     @test "Test that the cluster forms and is healthy" {
 
-        CACERT_FILE="/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-        TOKEN="$(< /var/run/secrets/kubernetes.io/serviceaccount/token)"
-
-        # Initial health status is "RED" bypass temporarily
-        clusterHealth="green"
+        # Initial health status is "RED" 
+        clusterHealth="red"
 
         #  run until either cluster status is green or 10 minute timeout
         timeout=0
         until [ "${clusterHealth}" == "green" -o ${timeout} -gt 600 ]; do
-          clusterHealth=$(curl -s --connect-timeout 1 \
-          --cacert $CACERT_FILE --header "Authorization: Bearer $TOKEN" \
-            --location \
-              http://{{ .Values.name }}.{{ .Release.Namespace }}:9200/_cat/health | \
-              cut -d ' ' -f 4)
+          run curl -s --connect-timeout 1 \
+          -u {{ .Values.test.account }}:{{ .Values.test.password }} \
+            --location http://{{ .Values.name }}.{{ .Release.Namespace }}:9200/_cat/health 
 
+          if [ $status -ne 0 ];then
+             echo "curl ES error: $status" >&3
+          fi
+
+          clusterHealth=$( echo $output | cut -d ' ' -f 4 )
+
+          echo "ES cluster health ${clusterHealth}" >&3
           # sleep for a 3 sec if failed
           if [ "${clusterHealth}" != "green" ]; then
-            echo "Will retry, clusterHealth is ${clusterHealth}"
+            echo "Will retry, clusterHealth is ${clusterHealth}" >&3
             timeout=$((${timeout}+3))
             sleep 3;
           fi

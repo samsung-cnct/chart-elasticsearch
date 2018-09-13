@@ -6,24 +6,58 @@
 image: docker.elastic.co/elasticsearch/elasticsearch-platinum:6.2.4
 name: elasticsearch
 
-#Testing (just needs curl)
-test_image: quay.io/samsung_cnct/e2etester:0.2
+cluster_name: elasticsearch-cluster
+network_host: 0.0.0.0
+
+#Testing (just needs curl, bats)
+test:
+  image: quay.io/samsung_cnct/e2etester:prod
+  account: elastic
+  password: changeme
 
 #Services
-port: 9200
-port_name: http
-port_selector: elasticsearch-data
-cluster_name: elasticsearch-cluster
-cluster_port: 9300
-cluster_port_name: cluster-comms
-service_name: elasticsearch-discovery
+services:
+  es:
+    name: elasticsearch
+    port: 9200
+    port_name: http
+    # public: false then no type and nodeport: none
+    public: false
+    # public: true then type is used.  set annotation for public DNS also
+    type: LoadBalancer
+    annotations:
+    - key: external-dns.alpha.kubernetes.io/hostname
+      # The domain will have to be pre-allocated in route53.
+      # add your service name.
+      # e.g. mikeln.cluster.cnct.io. is already allocated
+      #      value: esnew.mikeln.cluster.cnct.io. is the public name for this service
+      value: esnew.<yourcluster>.cluster.cnct.io.
+  discovery:
+    service_name: elasticsearch-discovery
+    cluster_port: 9300
+    cluster_port_name: cluster-comms
+    app_selector: elasticsearch-data
 
-#enviroment
-xpack_security_enabled: XPACK.SECURITY.ENABLED
-xpack_security_value: "true"
+security:
+  # NOTE: THIS NEEDS TO MOVE TO A SECRET INTEAD 9/11/2018
+  account: elastic
+  password: changeme
 
-elastic_password: ELASTIC_PASSWORD
-elastic_password_value: "changeme"
+data_envs:
+  HTTP_ENABLE: "true"
+  NODE_DATA: "true"
+  NODE_MASTER: "false"
+  HTTP_CORS_ENABLE: "false"
+  HTTP_CORS_ALLOW_ORIGIN: ""
+  MEMORY_LOCK: "false"
+  
+master_envs: 
+  HTTP_ENABLE: "false"
+  NODE_DATA: "false"
+  NODE_MASTER: "true"
+  HTTP_CORS_ENABLE: "false"
+  HTTP_CORS_ALLOW_ORIGIN: ""
+  MEMORY_LOCK: "false"
 
 #Master StatefulSet
 #
@@ -61,6 +95,8 @@ master_scheduling:
       #   operator: In
       #   values: ["value1", "value2"]
 # Peristent Valume Setup
+# Data mount point
+master_data_mount: "/usr/elasticsearch/data"
 #   Note the value must match the name of a pre-created Storage Class
 master_storage_class_key: "volume.beta.kubernetes.io/storage-class"
 master_storage_class_value: "anything"
@@ -103,6 +139,8 @@ data_scheduling:
 #ingress:
 #  host: elasticsearch.ingest.company.org
 #
+# Data mount point
+data_data_mount: "/usr/elasticsearch/data"
 # Peristent Valume Setup
 #   Note the value must match the name of a pre-created Storage Class
 data_storage_class_key: "volume.beta.kubernetes.io/storage-class"

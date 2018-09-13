@@ -30,11 +30,11 @@ data nodes (each):
  ``` 
  helm repo add cnct https://charts.migrations.cnct.io
  helm repo update
- helm install cnct/chart-elasticsearch 
+ helm install cnct/elasticsearch-chart
  ```  
 
 ## Curator
 This deployment is meant for use with Elasticsearch curator to manage indices.
-See the [chart](https://github.com/samsung-cnct/chart-curator) and [container](https://github.com/samsung-cnct/container-curator) for more information.
+See the [chart](https://github.com/samsung-cnct/chart-curator) and [container](https://github.com/samsung-cnct/chart-curator/tree/master/rootfs/curator) for more information.
 
 ###  [Guide to Elasticsearch Index Performance](https://www.elastic.co/guide/en/elasticsearch/guide/current/indexing-performance.html)

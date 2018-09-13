@@ -9,7 +9,7 @@ node:
   ingest: false
 
 path:
-  data: /usr/elasticsearch/data
+  data: ${DATA_MOUNT}
   logs: /usr/share/elasticsearch/logs
 
 bootstrap:
@@ -31,5 +31,14 @@ discovery:
   zen:
     ping.unicast.hosts: ${DISCOVERY_SERVICE}
     minimum_master_nodes: 2
+    
+action.auto_create_index: true 
+xpack.security.enabled: true 
+xpack.license.self_generated.type: trial 
+xpack.monitoring.enabled: false
+#xpack.monitoring.exporters.my_local:
+#  type: local
+#  use_ingest: false
+
 {{ end }}
 

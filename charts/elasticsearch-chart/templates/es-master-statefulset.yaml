@@ -24,12 +24,18 @@ spec:
         imagePullPolicy: IfNotPresent
         command: ["sysctl", "-w", "vm.max_map_count=262144"]
         securityContext: {"privileged": true}
+      - name: chown
+        image: {{.Values.image}}
+        command: ["chown", "-v", "elasticsearch:elasticsearch", {{ .Values.master_data_mount | quote }} ]
+        volumeMounts:
+        - name: esdata
+          mountPath: {{ .Values.master_data_mount }}
       containers:
       - name: {{.Values.name}}
         image: {{.Values.image}}
         ports:
-        - name: {{.Values.cluster_port_name}}
-          containerPort: {{.Values.cluster_port}}
+        - name: {{ .Values.services.discovery.cluster_port_name }}
+          containerPort: {{ .Values.services.discovery.cluster_port }}
         #  resource notes:  master is light weight so half a CPU.  Less then 4GB causes the container to OOM
         resources:
           limits:
@@ -45,41 +51,37 @@ spec:
               - IPC_LOCK
               - SYS_RESOURCE
         env:
-        - name: CLUSTER_NAME
-          value: "{{.Values.cluster_name}}"
-        - name: "{{.Values.xpack_security_enabled}}"
-          value: "{{.Values.xpack_security_value}}"
-        - name: "{{.Values.elastic_password}}"
-          value: "{{.Values.elastic_password_value}}"
-        - name: NODE_DATA
-          value: "false"
-        - name: NODE_MASTER
-          value: "true"
-        - name: SERVICE
-          value: "{{.Values.cluster_name}}"
-        - name: HTTP_ENABLE
-          value: "false"
-        - name: ACTION.AUTO_CREATE_INDEX
-          value: "true"
-        - name: XPACK.LICENSE.SELF_GENERATED.TYPE
-          value: "trial"
+        {{- range $key, $value := .Values.master_envs }}
+          - name: "{{ $key }}"
+            value: "{{ $value }}"
+        {{- end }}
+          - name: ELASTIC_PASSWORD
+            value: {{ .Values.security.password }}
+          - name: CLUSTER_NAME
+            value: "{{ .Values.cluster_name }}"
+          - name: SERVICE
+            value: "{{ .Values.cluster_name }}"
+          - name: NETWORK_HOST
+            value: "{{ .Values.network_host }}"
+          - name: DATA_MOUNT
+            value: "{{ .Values.master_data_mount }}"
         #  the min/max *must* be the same due to elasticsearch 5.0 bootstrap checks
-        - name: ES_JAVA_OPTS
-          value: "-Xms{{ .Values.master_Xms_Xmx }} -Xmx{{ .Values.master_Xms_Xmx }} -Djava.net.preferIPv4Stack=true"
-        - name: KUBERNETES_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: NODE_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: ELASTICSEARCH_SERVICE_NAME
-          value: "{{ .Values.service_name }}"
-        - name: "NAMESPACE"
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
+          - name: ES_JAVA_OPTS
+            value: "-Xms{{ .Values.master_Xms_Xmx }} -Xmx{{ .Values.master_Xms_Xmx }} -Djava.net.preferIPv4Stack=true"
+          - name: KUBERNETES_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: DISCOVERY_SERVICE
+            value: "{{ .Values.services.discovery.service_name }}"
+          - name: "NAMESPACE"
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
         imagePullPolicy: {{.Values.master_imagePullPolicy}}
       {{- if .Values.master_tolerations }}
       tolerations:
@@ -111,10 +113,10 @@ spec:
       {{- end }}
         volumeMounts:
         - name: esconfig
-          mountPath: /elasticsearch/config/elasticsearch.yml
+          mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
           subPath: elasticsearch.yml
         - name: esdata
-          mountPath: /usr/elasticsearch/data
+          mountPath: {{ .Values.master_data_mount }}
       volumes:
       - name: esconfig
         configMap:
