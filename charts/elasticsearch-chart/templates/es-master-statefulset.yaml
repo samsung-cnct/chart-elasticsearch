@@ -65,6 +65,8 @@ spec:
             value: "{{ .Values.network_host }}"
           - name: DATA_MOUNT
             value: "{{ .Values.master_data_mount }}"
+          - name: XPACK_SECURITY_ENABLED
+            value: "{{ .Values.xpack_security_enabled }}"
         #  the min/max *must* be the same due to elasticsearch 5.0 bootstrap checks
           - name: ES_JAVA_OPTS
             value: "-Xms{{ .Values.master_Xms_Xmx }} -Xmx{{ .Values.master_Xms_Xmx }} -Djava.net.preferIPv4Stack=true"
