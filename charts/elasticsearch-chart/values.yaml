@@ -2,7 +2,41 @@
 # This is a YAML-formatted file.
 # Declare name/value pairs to be passed into your templates.
 # name: value
+# ======================================
+# setup for sub chart external-dns  chart
+#
+# These are the FQDN for the services we need.  
+# The baseDomain has to be set up by hand in route53 before installing this chart.
+#
+# The esDomain entry will be created and linked to the correct ELB.
+# The esDomain will not be delete when this chart is uninstalled, you will
+# have to delete the route53 by hand if you want to delete it.
+#
+# NOTE: due to the yaml anchors, these can't be set on the command line
+#
+baseDomain: &baseDomain "<mydomain>.cluster.cnct.io"
+esDomain: &esDomain "es.<mydomain>.cluster.cnct.io"
 
+external-dns:
+  aws:
+    # These are the credentials for an aws user than can manipulate route53
+    # They must be supplied on the command line e.g.:
+    # --set external-dns.aws.secretKey="value1",external-dns.aws.accessKey="value2". 
+    #
+    # If these are invalid, the public DN for elasticsearch will not be created
+    secretKey: SET_ON_COMMAND_LINE
+    accessKey: SET_ON_COMMAND_LINE
+    roleArn: ""
+    region: "us-west-2"
+    # Filter for zones of this type (optional, options: public, private)
+    zoneType: ""
+  domainFilters: [ *baseDomain ]  
+  rbac:
+    create: true
+
+# ======================================
+# setup for ElasticSearch
+#
 image: docker.elastic.co/elasticsearch/elasticsearch-platinum:6.2.4
 name: elasticsearch
 
@@ -13,7 +47,7 @@ network_host: 0.0.0.0
 test:
   image: quay.io/samsung_cnct/e2etester:prod
   account: elastic
-  password: changeme
+  #password: is read from the secret set for the chart
 
 #Services
 services:
@@ -22,16 +56,13 @@ services:
     port: 9200
     port_name: http
     # public: false then no type and nodeport: none
-    public: false
+    public: true
     # public: true then type is used.  set annotation for public DNS also
     type: LoadBalancer
     annotations:
+      # This annotation is what tells external-dns to create and link the ELB to the FQDN
     - key: external-dns.alpha.kubernetes.io/hostname
-      # The domain will have to be pre-allocated in route53.
-      # add your service name.
-      # e.g. mikeln.cluster.cnct.io. is already allocated
-      #      value: esnew.mikeln.cluster.cnct.io. is the public name for this service
-      value: esnew.<yourcluster>.cluster.cnct.io.
+      value: *esDomain
   discovery:
     service_name: elasticsearch-discovery
     cluster_port: 9300
@@ -39,8 +70,8 @@ services:
     app_selector: elasticsearch-data
 
 security:
-  # NOTE: THIS NEEDS TO MOVE TO A SECRET INTEAD 9/11/2018
-  account: elastic
+  # This sets the initial password for ElasticSearch user 'elastic'
+  # This should be passed in on the command line:  --set security.password=mynewpassord
   password: changeme
 
 data_envs:

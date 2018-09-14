@@ -57,7 +57,10 @@ spec:
             value: "{{ $value }}"
         {{- end }}
           - name: ELASTIC_PASSWORD
-            value: {{ .Values.security.password }}
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: {{ template "fullname" . }}-auth
           - name: CLUSTER_NAME
             value: "{{ .Values.cluster_name }}"
           - name: SERVICE
