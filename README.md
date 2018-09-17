@@ -29,7 +29,6 @@ data nodes (each):
 ## Installation
  ``` 
  helm repo add cnct https://charts.migrations.cnct.io 
- helm repo add stable https://kubernetes-charts-stable.storage.googleapis.com/   
  helm repo update
  helm install cnct/elasticsearch-chart --name=es-test --namespace=logging --debug   --set security.password="mlnpass"
  ```  
