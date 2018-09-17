@@ -26,17 +26,11 @@ data nodes (each):
  - 1/2 CPU (500m)
  - 20GB of disk (this should be increased greatly for production use)
 
-## setup
-An AWS user that has route53 manipulation permissions.
-That user's credentials will be supplied in: $DNS_AWS_SECRET_ACCESS_KEY and $DNS_AWS_ACCESS_KEY_ID
- ## Installation
+## Installation
  ``` 
  helm repo add cnct https://charts.migrations.cnct.io 
- helm repo add stable https://kubernetes-charts-stable.storage.googleapis.com/   
- helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/   
  helm repo update
- helm dependency update
- helm install cnct/elasticsearch-chart --name=es-test --namespace=logging --debug   --set security.password="mlnpass",external-dns.aws.secretKey="$DNS_AWS_SECRET_ACCESS_KEY",external-dns.aws.accessKey="$DNS_AWS_ACCESS_KEY_ID"
+ helm install cnct/elasticsearch-chart --name=es-test --namespace=logging --debug   --set security.password="mlnpass"
  ```  
 
 ## Curator
