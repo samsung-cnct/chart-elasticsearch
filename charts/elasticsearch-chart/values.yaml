@@ -3,38 +3,6 @@
 # Declare name/value pairs to be passed into your templates.
 # name: value
 # ======================================
-# setup for sub chart external-dns  chart
-#
-# These are the FQDN for the services we need.  
-# The baseDomain has to be set up by hand in route53 before installing this chart.
-#
-# The esDomain entry will be created and linked to the correct ELB.
-# The esDomain will not be delete when this chart is uninstalled, you will
-# have to delete the route53 by hand if you want to delete it.
-#
-# NOTE: due to the yaml anchors, these can't be set on the command line
-#
-baseDomain: &baseDomain "<mydomain>.cluster.cnct.io"
-esDomain: &esDomain "es.<mydomain>.cluster.cnct.io"
-
-external-dns:
-  aws:
-    # These are the credentials for an aws user than can manipulate route53
-    # They must be supplied on the command line e.g.:
-    # --set external-dns.aws.secretKey="value1",external-dns.aws.accessKey="value2". 
-    #
-    # If these are invalid, the public DN for elasticsearch will not be created
-    secretKey: SET_ON_COMMAND_LINE
-    accessKey: SET_ON_COMMAND_LINE
-    roleArn: ""
-    region: "us-west-2"
-    # Filter for zones of this type (optional, options: public, private)
-    zoneType: ""
-  domainFilters: [ *baseDomain ]  
-  rbac:
-    create: true
-
-# ======================================
 # setup for ElasticSearch
 #
 image: docker.elastic.co/elasticsearch/elasticsearch-platinum:6.2.4
@@ -61,8 +29,10 @@ services:
     type: LoadBalancer
     annotations:
       # This annotation is what tells external-dns to create and link the ELB to the FQDN
+      # Replace <mydomin>.cluster.cncnt.io with your real domain in router53
+      # NOTE: the default is an invalid domain and will not be created if not set corretctly.
     - key: external-dns.alpha.kubernetes.io/hostname
-      value: *esDomain
+      value: "es.<mydomain>.cluster.cnct.io"
   discovery:
     service_name: elasticsearch-discovery
     cluster_port: 9300
