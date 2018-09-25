@@ -1,6 +1,6 @@
 ---
 name: elasticsearch-chart
-version: 0.1.9
+version: 0.1.10
 description: Elasticsearch for Kubernetes
 keywords:
 - elasticsearch

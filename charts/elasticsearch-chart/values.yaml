@@ -64,6 +64,8 @@ master_envs:
 #
 # Need a storage class for CI testing
 master_create_storage_class: false
+# required: aws | azure | vmware | bare
+master_storage_provisioner: "aws"
 #
 master_name: elasticsearch-master
 # master_replicas: if changing this value, please also update the
@@ -101,10 +103,19 @@ master_data_mount: "/usr/elasticsearch/data"
 #   Note the value must match the name of a pre-created Storage Class
 master_storage_class_key: "volume.beta.kubernetes.io/storage-class"
 master_storage_class_value: "anything"
+#
+# aws storage, vmware, bare metal:
+#    no extra params
+# azure
+master_storage_azure_skuname: Standard_LRS
+master_storage_azure_location: eastus
+master_storage_azure_storageaccount: 
 
 #Cluster StatefulSet
 # Need a storage class for CI testing
 data_create_storage_class: false
+# required: aws | azure | vmware | bare
+data_storage_provisioner: "aws"
 #
 data_name: elasticsearch-data
 # data_replicas: This can be changed at will for scaling purposes
@@ -146,3 +157,10 @@ data_data_mount: "/usr/elasticsearch/data"
 #   Note the value must match the name of a pre-created Storage Class
 data_storage_class_key: "volume.beta.kubernetes.io/storage-class"
 data_storage_class_value: "anything"
+#
+# aws storage, vmware, bare metal:
+#    no extra params
+# azure
+data_storage_azure_skuname: Standard_LRS
+data_storage_azure_location: eastus
+data_storage_azure_storageaccount: 
