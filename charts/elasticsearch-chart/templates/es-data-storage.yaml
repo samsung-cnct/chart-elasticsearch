@@ -8,11 +8,10 @@ provisioner: kubernetes.io/aws-ebs
 parameters:
   type: gp2
 {{- else if eq .Values.data_storage_provisioner "azure" }}
-provisioner: kubernetes.io/azure-file
+provisioner: kubernetes.io/azure-disk
 parameters:
-  skuName: {{ .Values.data_storage_azure_skuname }}
-  location: {{ .Values.data_storage_azure_location }}
-  storageAccount: {{ .Values.data_storage_azure_storageaccount }}
+  storageaccounttype: {{ .Values.data_storage_azure_type }}
+  kind: {{ .Values.data_storage_azure_kind }}
 {{- else if eq .Values.data_storage_provisioner "vmware" }}
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
