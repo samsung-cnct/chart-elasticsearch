@@ -107,9 +107,10 @@ master_storage_class_value: "anything"
 # aws storage, vmware, bare metal:
 #    no extra params
 # azure
-master_storage_azure_skuname: Standard_LRS
-master_storage_azure_location: eastus
-master_storage_azure_storageaccount: 
+# Standard_LRS | Premium_LRS
+master_storage_azure_type: Standard_LRS
+# Shared | Managed | Dedicated
+master_storage_azure_kind: Managed
 
 #Cluster StatefulSet
 # Need a storage class for CI testing
@@ -161,6 +162,7 @@ data_storage_class_value: "anything"
 # aws storage, vmware, bare metal:
 #    no extra params
 # azure
-data_storage_azure_skuname: Standard_LRS
-data_storage_azure_location: eastus
-data_storage_azure_storageaccount: 
+# Standard_LRS | Premium_LRS
+data_storage_azure_type: Standard_LRS
+# Shared | Managed | Dedicated
+data_storage_azure_kind: Managed
