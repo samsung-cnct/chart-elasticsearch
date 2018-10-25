@@ -30,9 +30,23 @@ spec:
         volumeMounts:
         - name: esdata
           mountPath: {{ .Values.master_data_mount }}
+      # copy SSH key from create location to shared data directory
+      - name: create-pk12
+        image: quay.io/samsung_cnct/elasticsearch-keygen
+        command: [ "cp", "/usr/share/elasticsearch/elastic-certificates.p12", "{{ .Values.data_data_mount }}/elastic-certificates.p12" ]
+        volumeMounts:
+        - name: esdata
+          mountPath: {{ .Values.data_data_mount }}
+      # end initContainers
       containers:
       - name: {{.Values.name}}
         image: {{.Values.image}}
+        lifecycle:
+          # copy SSH key from shared data directory to elasticsearch's config directory
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "cp {{ .Values.data_data_mount }}/elastic-certificates.p12 /usr/share/elasticsearch/config/elastic-certificates.p12 && chown elasticsearch /usr/share/elasticsearch/config/elastic-certificates.p12 && chmod 700 /usr/share/elasticsearch/config/elastic-certificates.p12"]
+          # end postStart
         ports:
         - name: {{ .Values.services.discovery.cluster_port_name }}
           containerPort: {{ .Values.services.discovery.cluster_port }}
