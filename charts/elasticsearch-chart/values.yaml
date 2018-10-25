@@ -43,6 +43,10 @@ security:
   # This sets the initial password for ElasticSearch user 'elastic'
   # This should be passed in on the command line:  --set security.password=mynewpassord
   password: changeme
+  ssl:
+    # appears to be a magic value.  Logins don't work when this is removed
+    # but it isn't actually used in any .yaml files.
+    enabled: "true"
 
 data_envs:
   HTTP_ENABLE: "true"
