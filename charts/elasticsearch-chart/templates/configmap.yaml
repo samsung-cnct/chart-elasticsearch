@@ -18,3 +18,5 @@ data:
   elasticsearch.yml: |-
 {{- include "elasticsearch.yml.tpl" . | indent 4}}
 {{ end }}
+  hello.sh: |-
+{{- include "hello.sh.tpl" . | indent 4}}

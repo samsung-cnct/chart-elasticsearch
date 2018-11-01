@@ -1,0 +1,14 @@
+# get IP via kubectl get service vault-service -nlogging -ojsonpath='{$.spec.clusterIP}'
+kind: Service
+apiVersion: v1
+metadata:
+  name: vault-service
+spec:
+  selector:
+    app: vault
+  ports:
+  - protocol: TCP
+    port: 80
+    # vault default listening TCP port
+    targetPort: 8200
+  type: LoadBalancer
