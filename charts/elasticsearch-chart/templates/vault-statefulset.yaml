@@ -1,6 +1,6 @@
 # originally from https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: StatefulSet
 metadata:
   name: hashicorp-vault
   labels:
@@ -21,8 +21,9 @@ spec:
         tier: infrastructure
     spec:
       containers:
-      - name: php-redis
-        image: gcr.io/google_samples/gb-frontend:v3
+      - name: hashicorp-vault
+        image: alpine:3.8
+        command: [ "/bin/ash", "-c", "wget https://releases.hashicorp.com/vault/0.11.3/vault_0.11.3_linux_amd64.zip && unzip vault_0.11.3_linux_amd64.zip; ./vault server -dev -dev-root-token-id=roottoken" ]
         resources:
           requests:
             cpu: 100m

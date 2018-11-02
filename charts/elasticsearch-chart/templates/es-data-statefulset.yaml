@@ -30,28 +30,17 @@ spec:
         volumeMounts:
         - name: esdata
           mountPath: {{ .Values.data_data_mount }}
-      - name: vaultinit
-        image: {{.Values.image}}
-        # run hello.sh
-        #                              Elasticsearch bin directory                                                     run file
-        #                                             copy from read only filesystem       chmod in read-write filesystem
-        command: [ "/bin/bash", "-c", "BIN=$(pwd)/bin;cp ${BIN}/hello.sh ${BIN}/hello2.sh; chmod 777 ${BIN}/hello2.sh; ${BIN}/hello2.sh; sleep 600s" ]
-        #command: [ "/bin/bash", "-c", "sleep 600s" ]
-        volumeMounts:
-        - name: esdata
-          mountPath: {{ .Values.data_data_mount }}
-        - name: hellosh
-          mountPath: /usr/share/elasticsearch/bin/hello.sh
-          subPath: hello.sh
       # end initContainers
       containers:
       - name: {{.Values.name}}
         image: {{.Values.image}}
         lifecycle:
-          # copy SSH key from shared data directory to elasticsearch's config directory
           postStart:
             exec:
-              command: ["/bin/bash", "-c", "cp {{ .Values.data_data_mount }}/elastic-certificates.p12 /usr/share/elasticsearch/config/elastic-certificates.p12 && chown elasticsearch /usr/share/elasticsearch/config/elastic-certificates.p12 && chmod 700 /usr/share/elasticsearch/config/elastic-certificates.p12"]
+              # run hello.sh
+              #                              Elasticsearch bin directory                                                     run file
+              #                                             copy from read only filesystem       chmod in read-write filesystem
+              command: [ "/bin/bash", "-c", "BIN=$(pwd)/bin;cp ${BIN}/hello.sh ${BIN}/hello2.sh; chmod 777 ${BIN}/hello2.sh; ${BIN}/hello2.sh" ]
           # end postStart
         ports:
         - name: {{ .Values.services.discovery.cluster_port_name }}
