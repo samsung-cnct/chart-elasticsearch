@@ -19,7 +19,16 @@ rules:
   - endpoints
   verbs:
   - get
-
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: {{.Values.namespace}}
+  name: pod-reader
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
@@ -41,3 +50,17 @@ roleRef:
   kind: Role
   name: {{.Values.name}}
   apiGroup: ""
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: read-pods
+  namespace: {{.Values.namespace}}
+subjects:
+- kind: ServiceAccount
+  name: {{.Values.name}}
+  namespace: logging
+roleRef:
+  kind: Role #this must be Role or ClusterRole
+  name: pod-reader # this must match the name of the Role or ClusterRole you wish to bind to
+  apiGroup: rbac.authorization.k8s.io

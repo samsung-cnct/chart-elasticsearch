@@ -2,12 +2,12 @@ kind: Service
 apiVersion: v1
 metadata:
   name: vault-service
+  labels:
+    app: vault
 spec:
   selector:
-    app: vault
+    component: vault
   ports:
   - protocol: TCP
     port: 8200
-    # vault default listening TCP port
-    targetPort: 8200
   type: LoadBalancer
