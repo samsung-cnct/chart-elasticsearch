@@ -34,18 +34,22 @@ echo "Smoke test passed."
 
 # lazy init elastic-certificates.p12 file; try to read and if read fails create cert and write it to Vault
 # an unset value comes back as as empty response return 0 (success)
-export P12_DATA=$(vault kv get -field=value secret/elastic-certificates.p12)
+export P12_DATA=$(vault kv get -field=value secret/elastic-certificates.p12.b64)
 # if P12_DATA is not empty
 if [[ ! -z "$P12_DATA" ]]; then
 	echo "Using stored P12 cert"
-	vault kv get -field=value secret/elastic-certificates.p12 > /usr/share/elasticsearch/config/elastic-certificates.p12
+	vault kv get -field=value secret/elastic-certificates.p12.b64 > /tmp/elastic-certificates.p12.b64
+	# unencode from base64 encoding
+	base64 -d /tmp/elastic-certificates.p12.b64 > /usr/share/elasticsearch/config/elastic-certificates.p12
 else
 	echo "Creating P12 cert."
 	# create Certificate Authority in home_dir
 	${home_dir}/bin/elasticsearch-certutil ca -v --out elastic-stack-ca.p12 --pass ''
 	# create certificate in /usr/elasticsearch/data
 	${home_dir}/bin/elasticsearch-certutil cert -v --ca elastic-stack-ca.p12 --ca-pass '' --pass '' --out /usr/share/elasticsearch/config/elastic-certificates.p12 
-	vault kv put secret/elastic-certificates.p12 value=@/usr/share/elasticsearch/config/elastic-certificates.p12
+	# encode to base64 encoding
+	base64 /usr/share/elasticsearch/config/elastic-certificates.p12 > /tmp/elastic-certificates.p12.b64
+	vault kv put secret/elastic-certificates.p12.b64 value=@/tmp/elastic-certificates.p12.b64
 fi
 
 echo "Setting permissions"
