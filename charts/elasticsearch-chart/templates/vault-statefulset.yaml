@@ -23,18 +23,18 @@ spec:
       containers:
       - name: hashicorp-vault
         image: alpine:3.8
-        command: [ "/bin/ash", "-c", "wget https://releases.hashicorp.com/vault/0.11.3/vault_0.11.3_linux_amd64.zip && unzip vault_0.11.3_linux_amd64.zip; ./vault server -dev -dev-root-token-id=roottoken" ]
+        command: [ "/bin/ash", "-c", "wget https://releases.hashicorp.com/vault/0.11.3/vault_0.11.3_linux_amd64.zip && unzip vault_0.11.3_linux_amd64.zip; ./vault server -dev -dev-listen-address=0.0.0.0:8200 -dev-root-token-id=roottoken" ]
         resources:
           requests:
             cpu: 100m
             memory: 100Mi
         env:
         - name: GET_HOSTS_FROM
-          value: dns
+          #value: dns
           # If your cluster config does not include a dns service, then to
           # instead access environment variables to find service host
           # info, comment out the 'value: dns' line above, and uncomment the
           # line below.
-          # value: env
+          value: env
         ports:
         - containerPort: 80

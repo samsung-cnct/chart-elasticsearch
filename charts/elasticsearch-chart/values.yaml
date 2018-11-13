@@ -7,6 +7,7 @@
 #
 image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
 name: elasticsearch
+namespace: logging
 
 cluster_name: elasticsearch-cluster
 network_host: 0.0.0.0
@@ -114,7 +115,7 @@ master_storage_azure_kind: Managed
 
 #Cluster StatefulSet
 # Need a storage class for CI testing
-data_create_storage_class: false
+data_create_storage_class: true
 # required: aws | azure | vmware | bare
 data_storage_provisioner: "aws"
 #

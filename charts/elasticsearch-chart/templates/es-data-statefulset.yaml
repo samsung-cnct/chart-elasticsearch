@@ -34,14 +34,10 @@ spec:
       containers:
       - name: {{.Values.name}}
         image: {{.Values.image}}
-        lifecycle:
-          postStart:
-            exec:
-              # run hello.sh
-              #                              Elasticsearch bin directory                                                     run file
-              #                                             copy from read only filesystem       chmod in read-write filesystem
-              command: [ "/bin/bash", "-c", "BIN=$(pwd)/bin;cp ${BIN}/hello.sh ${BIN}/hello2.sh; chmod 777 ${BIN}/hello2.sh; ${BIN}/hello2.sh" ]
-          # end postStart
+        # run hello.sh
+        #                              Elasticsearch bin directory                                                     run file
+        #                                             copy from read only filesystem       chmod in read-write filesystem................run normal start script
+        command: [ "/bin/bash", "-c", "BIN=$(pwd)/bin;cp ${BIN}/hello.sh ${BIN}/hello2.sh; chmod 777 ${BIN}/hello2.sh; ${BIN}/hello2.sh; /usr/local/bin/docker-entrypoint.sh eswrapper" ]
         ports:
         - name: {{ .Values.services.discovery.cluster_port_name }}
           containerPort: {{ .Values.services.discovery.cluster_port }}
