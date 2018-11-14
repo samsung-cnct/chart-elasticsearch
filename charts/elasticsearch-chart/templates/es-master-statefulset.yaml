@@ -126,6 +126,9 @@ spec:
         - name: hellosh
           mountPath: /usr/share/elasticsearch/bin/hello.sh
           subPath: hello.sh
+        - name: elasticcertificates
+          mountPath: /usr/share/elasticsearch/config/elastic-certificates.p12.b64
+          subPath: elastic-certificates.p12.b64
         - name: esdata
           mountPath: {{ .Values.master_data_mount }}
       volumes:
@@ -133,6 +136,9 @@ spec:
         configMap:
           name: {{ template "name" . }}
       - name: hellosh
+        configMap:
+          name: {{ template "name" . }}
+      - name: elasticcertificates
         configMap:
           name: {{ template "name" . }}
   volumeClaimTemplates:
