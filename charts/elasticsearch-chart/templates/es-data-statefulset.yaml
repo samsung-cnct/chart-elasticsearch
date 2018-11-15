@@ -35,9 +35,9 @@ spec:
       - name: {{.Values.name}}
         image: {{.Values.image}}
         # run hello.sh
-        #                              Elasticsearch bin directory                                                     run file
-        #                                             copy from read only filesystem       chmod in read-write filesystem................run normal start script
-        command: [ "/bin/bash", "-c", "BIN=$(pwd)/bin;cp ${BIN}/hello.sh ${BIN}/hello2.sh; chmod 777 ${BIN}/hello2.sh; ${BIN}/hello2.sh; /usr/local/bin/docker-entrypoint.sh eswrapper" ]
+        #                              Elasticsearch bin directory
+        #                                             copy from read only filesystem                                       chmod in read-write filesystem              run file                          run normal start script
+        command: [ "/bin/bash", "-c", "BIN=$(pwd)/bin;cp ${BIN}/unencode-certificates.sh ${BIN}/unencode-certificates2.sh; chmod 777 ${BIN}/unencode-certificates2.sh; ${BIN}/unencode-certificates2.sh; /usr/local/bin/docker-entrypoint.sh eswrapper" ]
         ports:
         - name: {{ .Values.services.discovery.cluster_port_name }}
           containerPort: {{ .Values.services.discovery.cluster_port }}
@@ -126,9 +126,9 @@ spec:
         - name: esconfig
           mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
           subPath: elasticsearch.yml
-        - name: hellosh
-          mountPath: /usr/share/elasticsearch/bin/hello.sh
-          subPath: hello.sh
+        - name: unencode-certificates
+          mountPath: /usr/share/elasticsearch/bin/unencode-certificates.sh
+          subPath: unencode-certificates.sh
         - name: elasticcertificates
           mountPath: /usr/share/elasticsearch/config/elastic-certificates.p12.b64
           subPath: elastic-certificates.p12.b64
@@ -138,7 +138,7 @@ spec:
       - name: esconfig
         configMap:
           name: {{ template "name" . }}
-      - name: hellosh
+      - name: unencode-certificates
         configMap:
           name: {{ template "name" . }}
       - name: elasticcertificates

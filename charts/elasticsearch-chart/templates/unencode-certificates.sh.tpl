@@ -1,4 +1,4 @@
-{{ define "hello.sh.tpl" }}
+{{ define "unencode-certificates.sh.tpl" }}
 
 #!/bin/bash
 
