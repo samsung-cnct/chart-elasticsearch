@@ -34,7 +34,7 @@ spec:
       containers:
       - name: {{.Values.name}}
         image: {{.Values.image}}
-        # run hello.sh
+        # run unencode-certificates.sh
         #                              Elasticsearch bin directory
         #                                             copy from read only filesystem                                       chmod in read-write filesystem              run file                          run normal start script
         command: [ "/bin/bash", "-c", "BIN=$(pwd)/bin;cp ${BIN}/unencode-certificates.sh ${BIN}/unencode-certificates2.sh; chmod 777 ${BIN}/unencode-certificates2.sh; ${BIN}/unencode-certificates2.sh; /usr/local/bin/docker-entrypoint.sh eswrapper" ]
