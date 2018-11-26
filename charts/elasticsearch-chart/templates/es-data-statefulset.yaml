@@ -30,7 +30,6 @@ spec:
         volumeMounts:
         - name: esdata
           mountPath: {{ .Values.data_data_mount }}
-      # end initContainers
       containers:
       - name: {{.Values.name}}
         image: {{.Values.image}}
@@ -93,7 +92,6 @@ spec:
               fieldRef:
                 fieldPath: metadata.namespace
         imagePullPolicy: Always
-      # end containers
       {{- if .Values.data_tolerations }}
       tolerations:
       {{- range .Values.data_tolerations }}
