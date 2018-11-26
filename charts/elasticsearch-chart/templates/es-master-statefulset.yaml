@@ -30,7 +30,6 @@ spec:
         volumeMounts:
         - name: esdata
           mountPath: {{ .Values.master_data_mount }}
-      # end initContainers
       containers:
       - name: {{.Values.name}}
         image: {{.Values.image}}
