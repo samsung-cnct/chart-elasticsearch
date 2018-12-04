@@ -114,7 +114,7 @@ master_storage_azure_kind: Managed
 
 #Cluster StatefulSet
 # Need a storage class for CI testing
-data_create_storage_class: true
+data_create_storage_class: false
 # required: aws | azure | vmware | bare
 data_storage_provisioner: "aws"
 #
