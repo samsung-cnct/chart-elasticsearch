@@ -33,6 +33,10 @@ spec:
       containers:
       - name: {{.Values.name}}
         image: {{.Values.image}}
+        # run unencode-certificates.sh
+        #                              Elasticsearch bin directory
+        #                                             copy from read only filesystem                                       chmod in read-write filesystem              run file                          run normal start script
+        command: [ "/bin/bash", "-c", "BIN=$(pwd)/bin;cp ${BIN}/unencode-certificates.sh ${BIN}/unencode-certificates2.sh; chmod 777 ${BIN}/unencode-certificates2.sh; ${BIN}/unencode-certificates2.sh; /usr/local/bin/docker-entrypoint.sh eswrapper" ]
         ports:
         - name: {{ .Values.services.discovery.cluster_port_name }}
           containerPort: {{ .Values.services.discovery.cluster_port }}
@@ -120,10 +124,22 @@ spec:
         - name: esconfig
           mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
           subPath: elasticsearch.yml
+        - name: unencode-certificates
+          mountPath: /usr/share/elasticsearch/bin/unencode-certificates.sh
+          subPath: unencode-certificates.sh
+        - name: elasticcertificates
+          mountPath: /usr/share/elasticsearch/config/elastic-certificates.p12.b64
+          subPath: elastic-certificates.p12.b64
         - name: esdata
           mountPath: {{ .Values.data_data_mount }}
       volumes:
       - name: esconfig
+        configMap:
+          name: {{ template "name" . }}
+      - name: unencode-certificates
+        configMap:
+          name: {{ template "name" . }}
+      - name: elasticcertificates
         configMap:
           name: {{ template "name" . }}
   volumeClaimTemplates:
@@ -132,6 +148,7 @@ spec:
       annotations:
               {{ .Values.data_storage_class_key }}: {{ .Values.data_storage_class_value }}
     spec:
+      # unbound persistant volume claims if ReadWriteMany
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:

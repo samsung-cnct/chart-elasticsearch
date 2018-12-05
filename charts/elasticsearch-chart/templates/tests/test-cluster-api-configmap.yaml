@@ -11,10 +11,13 @@ data:
 
         #  run until either cluster status is green or 10 minute timeout
         timeout=0
+        url=https://${ELASTICSEARCH_PORT_9200_TCP_ADDR}:9200/_cat/health
+        echo "Getting health status from url ${url}."
         until [ "${clusterHealth}" == "green" -o ${timeout} -gt 600 ]; do
-          run curl -s --connect-timeout 1 \
+          # -k lets us accept an unsigned certificate for HTTPS
+          run curl -s -k --connect-timeout 1 \
           -u {{ .Values.test.account }}:${ELASTIC_PASSWORD} \
-            --location http://{{ .Values.name }}.{{ .Release.Namespace }}:9200/_cat/health 
+            --location ${url} 
 
           if [ $status -ne 0 ];then
              echo "curl ES error: $status" >&3

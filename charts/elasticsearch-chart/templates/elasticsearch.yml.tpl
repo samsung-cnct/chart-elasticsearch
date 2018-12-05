@@ -36,6 +36,19 @@ action.auto_create_index: true
 xpack.security.enabled: true 
 xpack.license.self_generated.type: trial 
 xpack.monitoring.enabled: false
+
+# enable and configure SSL for intra-node communication
+# .p12 file must be executable (e.g. chmod 700)
+xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.verification_mode: certificate 
+xpack.security.transport.ssl.keystore.path: elastic-certificates.p12 
+xpack.security.transport.ssl.truststore.path: elastic-certificates.p12
+
+# enable HTTPS
+xpack.security.http.ssl.enabled: true
+xpack.security.http.ssl.keystore.path: elastic-certificates.p12 
+xpack.security.http.ssl.truststore.path: elastic-certificates.p12 
+
 #xpack.monitoring.exporters.my_local:
 #  type: local
 #  use_ingest: false
