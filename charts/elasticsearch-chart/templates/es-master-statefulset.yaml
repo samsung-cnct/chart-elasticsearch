@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{.Values.master_name}}
@@ -56,7 +56,7 @@ spec:
             value: "{{ $value }}"
         {{- end }}
           - name: ELASTIC_PASSWORD
-            valueFrom: 
+            valueFrom:
               secretKeyRef:
                 key: password
                 name: {{ template "fullname" . }}-auth
