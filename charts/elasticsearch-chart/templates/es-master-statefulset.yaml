@@ -10,6 +10,9 @@ metadata:
 spec:
   serviceName: "{{.Values.master_name}}"
   replicas: {{.Values.master_replicas}}
+  selector:
+    matchLabels:
+      app: {{.Values.name}}
   template:
     metadata:
       labels:
