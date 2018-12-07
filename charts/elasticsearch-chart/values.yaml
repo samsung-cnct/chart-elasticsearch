@@ -5,7 +5,7 @@
 # ======================================
 # setup for ElasticSearch
 #
-image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
+image: docker.elastic.co/elasticsearch/elasticsearch:6.5.2
 name: elasticsearch
 
 cluster_name: elasticsearch-cluster
