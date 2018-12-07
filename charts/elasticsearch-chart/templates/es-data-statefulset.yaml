@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{.Values.data_name}}
@@ -10,6 +10,9 @@ metadata:
 spec:
   serviceName: "{{.Values.data_name}}"
   replicas: {{.Values.data_replicas}}
+  selector:
+    matchLabels:
+      app: {{.Values.name}}
   template:
     metadata:
       labels:
