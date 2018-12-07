@@ -23,7 +23,5 @@ deployments:
           value: esmastersc
         - key: services.es.public
           value: false
-prod:  
+prod:
   doDeploy: none
-
- 

@@ -39,7 +39,7 @@ spec:
         ports:
         - name: {{ .Values.services.discovery.cluster_port_name }}
           containerPort: {{ .Values.services.discovery.cluster_port }}
-        #  resource notes:  master is light weight so half a CPU.  Less then 4GB causes the container to OOM
+        # resource notes:  master is light weight so half a CPU.  Less then 4GB causes the container to OOM
         resources:
           limits:
             cpu: {{.Values.master_cpu_limits}}
@@ -71,7 +71,7 @@ spec:
             value: "{{ .Values.network_host }}"
           - name: DATA_MOUNT
             value: "{{ .Values.master_data_mount }}"
-        #  the min/max *must* be the same due to elasticsearch 5.0 bootstrap checks
+            # the min/max *must* be the same due to elasticsearch 5.0 bootstrap checks
           - name: ES_JAVA_OPTS
             value: "-Xms{{ .Values.master_Xms_Xmx }} -Xmx{{ .Values.master_Xms_Xmx }} -Djava.net.preferIPv4Stack=true"
           - name: KUBERNETES_NAMESPACE
