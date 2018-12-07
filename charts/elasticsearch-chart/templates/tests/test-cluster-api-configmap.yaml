@@ -6,7 +6,7 @@ data:
   run.sh: |-
     @test "Test that the cluster forms and is healthy" {
 
-        # Initial health status is "RED" 
+        # Initial health status is "RED"
         clusterHealth="red"
 
         #  run until either cluster status is green or 10 minute timeout
@@ -14,7 +14,7 @@ data:
         until [ "${clusterHealth}" == "green" -o ${timeout} -gt 600 ]; do
           run curl -s --connect-timeout 1 \
           -u {{ .Values.test.account }}:${ELASTIC_PASSWORD} \
-            --location http://{{ .Values.name }}.{{ .Release.Namespace }}:9200/_cat/health 
+            --location http://{{ .Values.name }}.{{ .Release.Namespace }}:9200/_cat/health
 
           if [ $status -ne 0 ];then
              echo "curl ES error: $status" >&3

@@ -51,8 +51,8 @@ data_envs:
   HTTP_CORS_ENABLE: "false"
   HTTP_CORS_ALLOW_ORIGIN: ""
   MEMORY_LOCK: "false"
-  
-master_envs: 
+
+master_envs:
   HTTP_ENABLE: "false"
   NODE_DATA: "false"
   NODE_MASTER: "true"
@@ -147,7 +147,7 @@ data_scheduling:
       #   operator: In
       #   values: ["value1", "value2"]
 
-#  if you want to be able to write data to this cluster from 
+#  if you want to be able to write data to this cluster from
 #  outside the cluster, set the ingress.host value
 #ingress:
 #  host: elasticsearch.ingest.company.org

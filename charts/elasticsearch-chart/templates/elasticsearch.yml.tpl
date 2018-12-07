@@ -16,8 +16,8 @@ bootstrap:
   memory_lock: ${MEMORY_LOCK}
 
 gateway:
-  #recover_after_nodes: 70-80% of running nodes
-  #expected_nodes: total number of nodes
+  # recover_after_nodes: 70-80% of running nodes
+  # expected_nodes: total number of nodes
   recover_after_time: 5m
 
 http:
@@ -31,14 +31,12 @@ discovery:
   zen:
     ping.unicast.hosts: ${DISCOVERY_SERVICE}
     minimum_master_nodes: 2
-    
-action.auto_create_index: true 
-xpack.security.enabled: true 
-xpack.license.self_generated.type: trial 
+
+action.auto_create_index: true
+xpack.security.enabled: true
+xpack.license.self_generated.type: trial
 xpack.monitoring.enabled: false
-#xpack.monitoring.exporters.my_local:
-#  type: local
-#  use_ingest: false
-
+# xpack.monitoring.exporters.my_local:
+#   type: local
+#   use_ingest: false
 {{ end }}
-
