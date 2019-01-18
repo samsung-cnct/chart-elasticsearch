@@ -1,5 +1,5 @@
 name: elasticsearch-chart
-version: 0.2.0
+version: 0.2.1
 description: Elasticsearch for Kubernetes
 keywords:
 - elasticsearch
@@ -14,3 +14,5 @@ maintainers:
   email: oss-maintainer@samsung-cnct.io
 icon: https://github.com/samsung-cnct/solas/docs/images/samsung-logo.svg
 engine: gotpl
+# value should match values.image version
+appVersion: 6.4.2
