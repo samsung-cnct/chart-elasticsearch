@@ -20,6 +20,7 @@ spec:
   selector:
     matchLabels:
       app: {{.Values.name}}
+      name: {{.Values.master_name}}
   template:
     metadata:
       labels:

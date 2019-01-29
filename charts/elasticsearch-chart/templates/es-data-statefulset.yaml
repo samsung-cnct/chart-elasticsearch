@@ -19,7 +19,8 @@ spec:
   replicas: {{.Values.data_replicas}}
   selector:
     matchLabels:
-      app: {{.Values.name}}
+        app: {{.Values.name}}
+        name: {{.Values.data_name}}
   template:
     metadata:
       labels:
